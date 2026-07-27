@@ -11,6 +11,7 @@ import {
   type SceneKey,
 } from "@/types/invitation";
 
+import { AtlasVoiceTest } from "./atlas-voice-test";
 import { EmblemStage } from "./emblem-stage";
 
 const pillars = [
@@ -163,6 +164,7 @@ export function InvitationExperience({
               Continue silently
             </button>
           </div>
+          <AtlasVoiceTest />
         </section>
       </main>
     );

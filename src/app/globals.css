@@ -618,6 +618,77 @@ p {
   max-width: 680px;
 }
 
+.atlas-voice-test {
+  width: min(100%, 590px);
+  margin: 34px auto 0;
+  border: 1px solid rgb(225 194 116 / 22%);
+  padding: clamp(18px, 4vw, 26px);
+  background:
+    linear-gradient(135deg, rgb(225 194 116 / 8%), transparent 52%),
+    rgb(3 3 5 / 68%);
+  text-align: left;
+}
+
+.atlas-voice-test__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.atlas-voice-test__heading span,
+.atlas-voice-test__caption > span {
+  display: block;
+  color: var(--gold-highlight);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.atlas-voice-test__heading h2 {
+  margin: 5px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 4vw, 2rem);
+  font-weight: 500;
+}
+
+.atlas-voice-test__heading .atlas-voice-test__status {
+  max-width: 180px;
+  color: var(--muted);
+  line-height: 1.5;
+  text-align: right;
+}
+
+.atlas-voice-test__caption {
+  margin: 20px 0 0;
+  color: rgb(239 235 229 / 84%);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.atlas-voice-test__caption > span {
+  margin-bottom: 7px;
+}
+
+.atlas-voice-test__controls {
+  display: flex;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.atlas-voice-test__controls .control-button {
+  min-height: 42px;
+}
+
+.atlas-voice-test__error {
+  margin: 14px 0 0;
+  color: #e5a5a5;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
 .experience-shell {
   display: grid;
   min-height: 100svh;
@@ -4916,6 +4987,19 @@ p {
   .gate-card,
   .narration-card {
     padding: 28px 20px;
+  }
+
+  .atlas-voice-test__heading {
+    display: grid;
+  }
+
+  .atlas-voice-test__heading .atlas-voice-test__status {
+    max-width: none;
+    text-align: left;
+  }
+
+  .atlas-voice-test__controls {
+    display: grid;
   }
 
   .experience-shell {

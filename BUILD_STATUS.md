@@ -325,11 +325,62 @@ legibility issues, then connect the existing typed event boundary to an
 approved privacy-conscious analytics destination. Do not add more discovery
 chambers before this sequence is observed with founding members.
 
+## Atlas voice test — ElevenLabs
+
+Added:
+
+- A temporary, on-demand Atlas voice test after invitation access is verified,
+  beneath the Atlas-guided and silent entry choices.
+- A server-only App Router endpoint at
+  `src/app/api/atlas/narration/route.ts` that validates narration with Zod,
+  enforces a 600-character limit, applies a local request rate limit, calls
+  ElevenLabs, and returns uncached MP3 audio.
+- Safe handling for missing configuration, invalid text, provider failures,
+  provider and local rate limits, network failures, unexpected responses, and
+  empty audio.
+- Generate and Play, loading, pause, resume, replay, caption, and error states
+  without autoplay or overlapping generation requests.
+- Browser object URL cleanup when audio is replaced or the control unmounts.
+- Server-only environment placeholders in `.env.example`; the real credential
+  remains in the Git-ignored `.env.local` file for local development.
+
+Configuration:
+
+- Atlas model, output format, timeout, maximum narration length, and voice
+  tuning live in `src/lib/atlas/voice-config.ts`.
+- Adjust `atlasVoiceSettings` in that file to tune stability, similarity boost,
+  style, speaker boost, or speed.
+- The route reads only `ELEVENLABS_API_KEY` and `ATLAS_VOICE_ID` from the server
+  environment. Neither value is available to client components.
+
+Validated:
+
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 Turbopack production build passes and includes the dynamic
+  `/api/atlas/narration` route.
+- `.env.local` is excluded by Git, and neither the credential nor the configured
+  voice ID is stored in tracked source.
+- `LS-BV-001`, the universal QR flow, and `/icon.png` are unchanged.
+
+Remaining for production narration:
+
+- Add the two server-only environment variables to the production host.
+- Replace the temporary in-memory rate limit with a distributed limiter before
+  broader access.
+- Approve the complete narration script, generate final assets through an
+  approved controlled workflow, store them in the reserved private audio
+  bucket, and connect scene-level playback.
+- Complete browser, iOS, and Android playback QA before enabling narration
+  throughout the invitation.
+
 ## Current structure
 
 ```text
 src/app/
   page.tsx             Universal arrival and Legacy Access Code entry
+  api/atlas/
+    narration/          Server-only ElevenLabs MP3 generation
   api/invitations/
     access/             Server-side access-code recognition
   invite/[token]/       Phase 1 private induction
@@ -360,7 +411,7 @@ supabase/migrations/
 - Paid memberships or billing
 - Full invitation administration dashboard
 - Live generative AI coaching
-- Synthetic Atlas voice or fake narration
+- Permanent generated Atlas narration library
 - Member direct messaging
 - Wearable integrations
 - Medical diagnosis, clinical recommendations, or invented wellness scores
@@ -375,6 +426,7 @@ supabase/migrations/
 - Live access-code hashes and approved invitation content inserted in Supabase
 - Production site URL and Supabase Auth redirect allowlist
 - Production Vercel environment variables
+- Production server-only ElevenLabs API key and Atlas voice ID
 - Approved founding-member records and verified email addresses
 - Approved member protocol assignments
 - Approved directory visibility and member profile copy
