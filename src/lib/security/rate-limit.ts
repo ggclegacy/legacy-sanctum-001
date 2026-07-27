@@ -10,7 +10,7 @@ const atlasVoiceAttempts = new Map<string, RateEntry>();
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_ATTEMPTS = 12;
 const ATLAS_VOICE_WINDOW_MS = 60 * 1000;
-const ATLAS_VOICE_MAX_ATTEMPTS = 4;
+const ATLAS_VOICE_MAX_ATTEMPTS = 30;
 
 export function consumeVerificationAttempt(identifier: string) {
   const now = Date.now();

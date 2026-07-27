@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { createDemonstrationMember } from "@/data/preview/demo-member";
+import { useAtlasNarration } from "@/hooks/useAtlasNarration";
 import { usePreviewExperience } from "@/hooks/usePreviewExperience";
 
 import { PreviewCompletion } from "./PreviewCompletion";
@@ -50,15 +51,28 @@ export function SanctumPreviewExperience({
   fullName,
   memberNumber,
   memberType,
+  narrationEnabled,
   onReturnToInvitation,
 }: {
   firstName: string;
   fullName: string;
   memberNumber: string;
   memberType: string;
+  narrationEnabled: boolean;
   onReturnToInvitation: () => void;
 }) {
   const experience = usePreviewExperience({ firstName, memberNumber });
+  const {
+    status: narrationStatus,
+    error: narrationError,
+    muted: narrationMuted,
+    hasAudio: narrationHasAudio,
+    speak,
+    pause,
+    resume,
+    toggleMuted,
+    stop,
+  } = useAtlasNarration();
   const { state } = experience;
   const returnRequestedRef = useRef(false);
   const member = createDemonstrationMember({
@@ -79,6 +93,26 @@ export function SanctumPreviewExperience({
   const comparisonComplete =
     state.adaptiveInteractionIds.includes("comparison:original") &&
     state.adaptiveInteractionIds.includes("comparison:adapted");
+
+  useEffect(() => {
+    if (!narrationEnabled || !state.hydrated) {
+      stop();
+      return;
+    }
+
+    void speak(
+      experience.caption,
+      `demonstration:${state.atlasCaptionId}:${state.captionRevision}`,
+    );
+  }, [
+    experience.caption,
+    narrationEnabled,
+    speak,
+    state.atlasCaptionId,
+    state.captionRevision,
+    state.hydrated,
+    stop,
+  ]);
 
   useEffect(() => {
     if (state.stage !== "complete" || !returnRequestedRef.current) return;
@@ -228,6 +262,11 @@ export function SanctumPreviewExperience({
       caption={experience.caption}
       captionRevision={state.captionRevision}
       captionsEnabled={state.captionsEnabled}
+      narrationEnabled={narrationEnabled}
+      narrationStatus={narrationStatus}
+      narrationError={narrationError}
+      narrationHasAudio={narrationHasAudio}
+      narrationMuted={narrationMuted}
       reducedMotion={state.reducedMotion}
       actionLabel={actionLabel}
       actionHint={actionHint}
@@ -235,6 +274,9 @@ export function SanctumPreviewExperience({
       onAction={onAction}
       onReplayCaption={experience.replayCaption}
       onToggleCaptions={experience.toggleCaptions}
+      onPauseNarration={pause}
+      onResumeNarration={() => void resume()}
+      onToggleNarrationMute={toggleMuted}
     >
       <DiscoveryBoundary onReturn={experience.restartDemonstration}>
         <AnimatePresence mode="wait">

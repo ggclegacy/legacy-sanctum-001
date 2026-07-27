@@ -618,77 +618,6 @@ p {
   max-width: 680px;
 }
 
-.atlas-voice-test {
-  width: min(100%, 590px);
-  margin: 34px auto 0;
-  border: 1px solid rgb(225 194 116 / 22%);
-  padding: clamp(18px, 4vw, 26px);
-  background:
-    linear-gradient(135deg, rgb(225 194 116 / 8%), transparent 52%),
-    rgb(3 3 5 / 68%);
-  text-align: left;
-}
-
-.atlas-voice-test__heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.atlas-voice-test__heading span,
-.atlas-voice-test__caption > span {
-  display: block;
-  color: var(--gold-highlight);
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.atlas-voice-test__heading h2 {
-  margin: 5px 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.45rem, 4vw, 2rem);
-  font-weight: 500;
-}
-
-.atlas-voice-test__heading .atlas-voice-test__status {
-  max-width: 180px;
-  color: var(--muted);
-  line-height: 1.5;
-  text-align: right;
-}
-
-.atlas-voice-test__caption {
-  margin: 20px 0 0;
-  color: rgb(239 235 229 / 84%);
-  font-size: 0.82rem;
-  line-height: 1.7;
-}
-
-.atlas-voice-test__caption > span {
-  margin-bottom: 7px;
-}
-
-.atlas-voice-test__controls {
-  display: flex;
-  margin-top: 20px;
-  flex-wrap: wrap;
-  gap: 9px;
-}
-
-.atlas-voice-test__controls .control-button {
-  min-height: 42px;
-}
-
-.atlas-voice-test__error {
-  margin: 14px 0 0;
-  color: #e5a5a5;
-  font-size: 0.75rem;
-  line-height: 1.5;
-}
-
 .experience-shell {
   display: grid;
   min-height: 100svh;
@@ -4729,6 +4658,13 @@ p {
   line-height: 1.55;
 }
 
+.caption-region__error {
+  grid-column: 2;
+  color: #e5a5a5;
+  font-size: 0.66rem;
+  line-height: 1.45;
+}
+
 .scene-controls {
   display: grid;
   min-height: 48px;
@@ -4987,19 +4923,6 @@ p {
   .gate-card,
   .narration-card {
     padding: 28px 20px;
-  }
-
-  .atlas-voice-test__heading {
-    display: grid;
-  }
-
-  .atlas-voice-test__heading .atlas-voice-test__status {
-    max-width: none;
-    text-align: left;
-  }
-
-  .atlas-voice-test__controls {
-    display: grid;
   }
 
   .experience-shell {
@@ -5266,6 +5189,10 @@ p {
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+  }
+
+  .caption-region__error {
+    grid-column: 1;
   }
 
   .scene-controls {
@@ -8702,6 +8629,47 @@ a.member-nav__item:hover,
   padding-inline: 9px;
 }
 
+.atlas-guide__audio {
+  display: flex;
+  grid-column: 2 / 4;
+  align-items: center;
+  gap: 7px;
+}
+
+.atlas-guide__audio > span {
+  margin-right: 3px;
+  color: rgb(169 161 154 / 64%);
+  font-size: 0.43rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.atlas-guide__audio button {
+  min-height: 28px;
+  border: 1px solid rgb(225 194 116 / 14%);
+  background: rgb(7 7 9 / 72%);
+  padding: 0 8px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.43rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.atlas-guide__audio button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.atlas-guide__voice-error {
+  grid-column: 2 / 4;
+  color: #e5a5a5;
+  font-size: 0.58rem;
+  line-height: 1.4;
+}
+
 .atlas-guide__action {
   display: grid;
   justify-items: end;
@@ -9018,6 +8986,12 @@ a.member-nav__item:hover,
     gap: 10px;
   }
 
+  .atlas-guide__audio,
+  .atlas-guide__voice-error {
+    grid-column: 1 / 4;
+    padding-left: 62px;
+  }
+
   .preview-atlas-orb {
     width: 52px;
   }
@@ -9095,6 +9069,15 @@ a.member-nav__item:hover,
   .atlas-guide__replay {
     min-width: 50px;
     font-size: 0.43rem;
+  }
+
+  .atlas-guide__audio {
+    flex-wrap: wrap;
+    padding-left: 0;
+  }
+
+  .atlas-guide__voice-error {
+    padding-left: 0;
   }
 }
 

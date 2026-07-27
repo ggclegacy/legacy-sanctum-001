@@ -146,7 +146,7 @@ const blairInvitation: InvitationExperienceData = {
     {
       sceneKey: "recognition",
       script:
-        "Access recognized. Welcome, Blair. Legacy Sanctum Founding Member zero zero one.",
+        "Identity confirmed. Welcome, Blair. You have been selected as Legacy Sanctum Founding Member Zero Zero One. The Atlas Demonstration is ready.",
       audioPath: null,
       durationMs: null,
     },

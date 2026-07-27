@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 
+import type { AtlasPlaybackStatus } from "@/hooks/useAtlasNarration";
 import type { DemonstrationStage } from "@/lib/preview/preview-types";
 
 import { AtlasGuide } from "./atlas/AtlasGuide";
@@ -19,6 +20,11 @@ export function PreviewShell({
   caption,
   captionRevision,
   captionsEnabled,
+  narrationEnabled,
+  narrationStatus,
+  narrationError,
+  narrationHasAudio,
+  narrationMuted,
   reducedMotion,
   actionLabel,
   actionHint,
@@ -26,6 +32,9 @@ export function PreviewShell({
   onAction,
   onReplayCaption,
   onToggleCaptions,
+  onPauseNarration,
+  onResumeNarration,
+  onToggleNarrationMute,
   children,
 }: {
   firstName: string;
@@ -37,6 +46,11 @@ export function PreviewShell({
   caption: string;
   captionRevision: number;
   captionsEnabled: boolean;
+  narrationEnabled: boolean;
+  narrationStatus: AtlasPlaybackStatus;
+  narrationError: string;
+  narrationHasAudio: boolean;
+  narrationMuted: boolean;
   reducedMotion: boolean;
   actionLabel: string;
   actionHint?: string;
@@ -44,6 +58,9 @@ export function PreviewShell({
   onAction: () => void;
   onReplayCaption: () => void;
   onToggleCaptions: () => void;
+  onPauseNarration: () => void;
+  onResumeNarration: () => void;
+  onToggleNarrationMute: () => void;
   children: ReactNode;
 }) {
   return (
@@ -69,12 +86,20 @@ export function PreviewShell({
         caption={caption}
         captionRevision={captionRevision}
         captionsEnabled={captionsEnabled}
+        narrationEnabled={narrationEnabled}
+        narrationStatus={narrationStatus}
+        narrationError={narrationError}
+        narrationHasAudio={narrationHasAudio}
+        narrationMuted={narrationMuted}
         reducedMotion={reducedMotion}
         actionLabel={actionLabel}
         actionHint={actionHint}
         actionDisabled={actionDisabled}
         onAction={onAction}
         onReplay={onReplayCaption}
+        onPauseNarration={onPauseNarration}
+        onResumeNarration={onResumeNarration}
+        onToggleNarrationMute={onToggleNarrationMute}
       />
     </section>
   );

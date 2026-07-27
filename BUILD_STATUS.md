@@ -325,12 +325,27 @@ legibility issues, then connect the existing typed event boundary to an
 approved privacy-conscious analytics destination. Do not add more discovery
 chambers before this sequence is observed with founding members.
 
-## Atlas voice test — ElevenLabs
+## Atlas narration — ElevenLabs
 
 Added:
 
-- A temporary, on-demand Atlas voice test after invitation access is verified,
-  beneath the Atlas-guided and silent entry choices.
+- On-demand Atlas narration across all nine invitation scenes when the member
+  chooses `Begin with Atlas`.
+- Caption-matched narration throughout The Atlas Demonstration, including the
+  Connected Man guided sequence, relationship exploration, Adaptive
+  Intelligence analysis, opportunities, reasoning, scenarios, protocol
+  comparison, what-if model, and closing.
+- A shared client narration controller at
+  `src/hooks/useAtlasNarration.ts` that cancels stale requests, prevents
+  overlapping lines, caches generated audio only for the current browser
+  session, and revokes every temporary object URL.
+- Clear generating, speaking, paused, ready, completed, and error states with
+  pause, resume, replay, mute, and unmute controls.
+- Audio handoff between the invitation and demonstration so the two narration
+  layers never speak simultaneously.
+- Blair’s recognition line now uses the approved full opening:
+  `Identity confirmed. Welcome, Blair. You have been selected as Legacy
+  Sanctum Founding Member Zero Zero One. The Atlas Demonstration is ready.`
 - A server-only App Router endpoint at
   `src/app/api/atlas/narration/route.ts` that validates narration with Zod,
   enforces a 600-character limit, applies a local request rate limit, calls
@@ -338,9 +353,6 @@ Added:
 - Safe handling for missing configuration, invalid text, provider failures,
   provider and local rate limits, network failures, unexpected responses, and
   empty audio.
-- Generate and Play, loading, pause, resume, replay, caption, and error states
-  without autoplay or overlapping generation requests.
-- Browser object URL cleanup when audio is replaced or the control unmounts.
 - Server-only environment placeholders in `.env.example`; the real credential
   remains in the Git-ignored `.env.local` file for local development.
 
@@ -359,20 +371,24 @@ Validated:
 - Next.js route generation and strict TypeScript pass.
 - The Next.js 16.2.12 Turbopack production build passes and includes the dynamic
   `/api/atlas/narration` route.
+- A live local provider smoke test returns HTTP `200`, `audio/mpeg`, and a
+  nonempty MP3 response without writing a permanent audio file.
 - `.env.local` is excluded by Git, and neither the credential nor the configured
   voice ID is stored in tracked source.
 - `LS-BV-001`, the universal QR flow, and `/icon.png` are unchanged.
 
 Remaining for production narration:
 
-- Add the two server-only environment variables to the production host.
 - Replace the temporary in-memory rate limit with a distributed limiter before
   broader access.
-- Approve the complete narration script, generate final assets through an
-  approved controlled workflow, store them in the reserved private audio
-  bucket, and connect scene-level playback.
-- Complete browser, iOS, and Android playback QA before enabling narration
-  throughout the invitation.
+- Review and approve any final copy changes to the existing invitation and
+  demonstration captions; spoken narration intentionally follows those
+  captions exactly.
+- Decide later whether approved production narration should remain generated
+  on demand or be generated once and stored in the reserved private audio
+  bucket.
+- Complete browser, iOS, and Android playback QA before broader founding-member
+  distribution.
 
 ## Current structure
 
@@ -426,7 +442,6 @@ supabase/migrations/
 - Live access-code hashes and approved invitation content inserted in Supabase
 - Production site URL and Supabase Auth redirect allowlist
 - Production Vercel environment variables
-- Production server-only ElevenLabs API key and Atlas voice ID
 - Approved founding-member records and verified email addresses
 - Approved member protocol assignments
 - Approved directory visibility and member profile copy

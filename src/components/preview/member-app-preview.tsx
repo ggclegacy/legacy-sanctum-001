@@ -5,12 +5,14 @@ export function MemberAppPreview({
   fullName,
   memberNumber,
   memberType,
+  narrationEnabled,
   onReturnToInvitation,
 }: {
   firstName: string;
   fullName: string;
   memberNumber: string;
   memberType: string;
+  narrationEnabled: boolean;
   onReturnToInvitation: () => void;
 }) {
   return (
@@ -19,6 +21,7 @@ export function MemberAppPreview({
       fullName={fullName}
       memberNumber={memberNumber}
       memberType={memberType}
+      narrationEnabled={narrationEnabled}
       onReturnToInvitation={onReturnToInvitation}
     />
   );

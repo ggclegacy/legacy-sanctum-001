@@ -1,9 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { MemberAppPreview } from "@/components/preview/member-app-preview";
+import { useAtlasNarration } from "@/hooks/useAtlasNarration";
 import {
   SCENE_KEYS,
   type InvitationExperienceData,
@@ -11,7 +12,6 @@ import {
   type SceneKey,
 } from "@/types/invitation";
 
-import { AtlasVoiceTest } from "./atlas-voice-test";
 import { EmblemStage } from "./emblem-stage";
 
 const pillars = [
@@ -54,10 +54,18 @@ export function InvitationExperience({
   const [preference, setPreference] = useState<NarrationPreference | null>(null);
   const [sceneIndex, setSceneIndex] = useState(0);
   const [sceneRevision, setSceneRevision] = useState(0);
-  const [muted, setMuted] = useState(false);
-  const [paused, setPaused] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const {
+    status: narrationStatus,
+    error: narrationError,
+    muted: narrationMuted,
+    hasAudio: narrationHasAudio,
+    speak,
+    pause,
+    resume,
+    toggleMuted,
+    stop,
+  } = useAtlasNarration();
   const reduceMotion = useReducedMotion();
 
   const sceneKey = SCENE_KEYS[sceneIndex];
@@ -65,8 +73,8 @@ export function InvitationExperience({
     () => data.narration.find((segment) => segment.sceneKey === sceneKey),
     [data.narration, sceneKey],
   );
-  const hasAtlasAudio = useMemo(
-    () => data.narration.some((segment) => Boolean(segment.audioPath)),
+  const hasAtlasNarration = useMemo(
+    () => data.narration.some((segment) => Boolean(segment.script.trim())),
     [data.narration],
   );
 
@@ -88,18 +96,37 @@ export function InvitationExperience({
   }, [preference, sceneKey, trackingEnabled]);
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || preference !== "atlas" || !narration?.audioPath) return;
-
-    audio.currentTime = 0;
-    if (!paused) {
-      void audio.play().catch(() => setPaused(true));
+    if (preference !== "atlas" || sceneKey === "platform") {
+      stop();
+      return;
     }
-  }, [narration?.audioPath, paused, preference, sceneRevision]);
+
+    if (narration?.script) {
+      void speak(
+        narration.script,
+        `invitation:${sceneKey}:${sceneRevision}`,
+      );
+    }
+  }, [
+    narration?.script,
+    preference,
+    sceneKey,
+    sceneRevision,
+    speak,
+    stop,
+  ]);
 
   function choosePreference(next: NarrationPreference) {
     setPreference(next);
-    setMuted(next === "silent");
+    if (next === "atlas" && narration?.script) {
+      void speak(
+        narration.script,
+        `invitation:${sceneKey}:${sceneRevision}`,
+      );
+    } else {
+      stop();
+    }
+
     if (trackingEnabled) {
       void fetch("/api/invitations/event", {
         method: "POST",
@@ -114,17 +141,12 @@ export function InvitationExperience({
 
   function goToScene(nextIndex: number) {
     setSceneIndex(Math.max(0, Math.min(SCENE_KEYS.length - 1, nextIndex)));
-    setPaused(false);
     setSceneRevision((value) => value + 1);
   }
 
   function togglePause() {
-    const next = !paused;
-    setPaused(next);
-    if (audioRef.current) {
-      if (next) audioRef.current.pause();
-      else void audioRef.current.play().catch(() => setPaused(true));
-    }
+    if (narrationStatus === "playing") pause();
+    else void resume();
   }
 
   if (!preference) {
@@ -138,15 +160,11 @@ export function InvitationExperience({
           </div>
           <EmblemStage compact priority />
           <p className="eyebrow">Choose your entry</p>
-          <h1 id="narration-title">
-            {hasAtlasAudio
-              ? "How would you like to enter?"
-              : "Enter the guided experience."}
-          </h1>
+          <h1 id="narration-title">How would you like to enter?</h1>
           <p>
-            {hasAtlasAudio
+            {hasAtlasNarration
               ? "Atlas narration is available. Captions remain active in either mode."
-              : "Atlas narration is staged for the audio pass. His complete script is presented as captions now."}
+              : "The complete experience remains available through captions."}
           </p>
           <div className="entry-actions">
             <button
@@ -154,7 +172,7 @@ export function InvitationExperience({
               type="button"
               onClick={() => choosePreference("atlas")}
             >
-              {hasAtlasAudio ? "Begin with Atlas" : "Begin guided entry"}
+              Begin with Atlas
             </button>
             <button
               className="premium-button premium-button--secondary"
@@ -164,14 +182,13 @@ export function InvitationExperience({
               Continue silently
             </button>
           </div>
-          <AtlasVoiceTest />
         </section>
       </main>
     );
   }
 
   const showAudioControls =
-    preference === "atlas" && Boolean(narration?.audioPath);
+    preference === "atlas" && sceneKey !== "platform";
 
   return (
     <main className="experience-shell">
@@ -227,6 +244,7 @@ export function InvitationExperience({
             data={data}
             preview={preview}
             persistResponse={trackingEnabled}
+            narrationEnabled={preference === "atlas"}
             submitted={submitted}
             onSubmitted={() => setSubmitted(true)}
             onContinue={() => goToScene(sceneIndex + 1)}
@@ -235,11 +253,22 @@ export function InvitationExperience({
       </AnimatePresence>
 
       <div className="caption-region" aria-live="polite">
-        <span>{preference === "atlas" ? "Atlas" : "Silent mode"}</span>
+        <span>
+          {preference === "atlas"
+              ? sceneKey === "platform"
+              ? "Atlas demonstration"
+              : `Atlas · ${narrationStatus}`
+            : "Silent mode"}
+        </span>
         <p>
           {narration?.script ??
             "Approved narration has not been published for this scene. The complete message remains on screen."}
         </p>
+        {narrationError && sceneKey !== "platform" ? (
+          <small className="caption-region__error" role="alert">
+            {narrationError}
+          </small>
+        ) : null}
       </div>
 
       <footer className="scene-controls">
@@ -265,15 +294,16 @@ export function InvitationExperience({
                 className="control-button"
                 type="button"
                 onClick={togglePause}
+                disabled={!narrationHasAudio}
               >
-                {paused ? "Resume" : "Pause"}
+                {narrationStatus === "playing" ? "Pause" : "Resume"}
               </button>
               <button
                 className="control-button"
                 type="button"
-                onClick={() => setMuted((value) => !value)}
+                onClick={toggleMuted}
               >
-                {muted ? "Unmute" : "Mute"}
+                {narrationMuted ? "Unmute" : "Mute"}
               </button>
             </>
           ) : null}
@@ -288,15 +318,6 @@ export function InvitationExperience({
         </button>
       </footer>
 
-      {narration?.audioPath ? (
-        <audio
-          ref={audioRef}
-          src={narration.audioPath}
-          muted={muted}
-          preload="metadata"
-          onEnded={() => setPaused(true)}
-        />
-      ) : null}
     </main>
   );
 }
@@ -306,6 +327,7 @@ function SceneContent({
   data,
   preview,
   persistResponse,
+  narrationEnabled,
   submitted,
   onSubmitted,
   onContinue,
@@ -314,6 +336,7 @@ function SceneContent({
   data: InvitationExperienceData;
   preview: boolean;
   persistResponse: boolean;
+  narrationEnabled: boolean;
   submitted: boolean;
   onSubmitted: () => void;
   onContinue: () => void;
@@ -409,6 +432,7 @@ function SceneContent({
             fullName={data.displayName}
             memberNumber={data.memberNumber}
             memberType={data.memberType}
+            narrationEnabled={narrationEnabled}
             onReturnToInvitation={onContinue}
           />
         </div>
