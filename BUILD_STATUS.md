@@ -390,6 +390,69 @@ Remaining for production narration:
 - Complete browser, iOS, and Android playback QA before broader founding-member
   distribution.
 
+## Phase 3D — Continuous Atlas Future Platform Tour
+
+Added:
+
+- Replaced the click-by-click Atlas Demonstration with one continuous
+  presentation. Once the existing member preview begins, Atlas narrates each
+  chapter and the interface advances automatically when its audio ends.
+- Added a caption-timed automatic fallback when voice narration is unavailable
+  or disabled, so the presentation remains complete without ElevenLabs.
+- Added one 12-chapter product narrative covering Command Center, whole-system
+  Vitality, hormone tracking, bloodwork intelligence, protocol and
+  clinician-directed peptide tracking, training, Atlas adaptive intelligence,
+  Mindset, Brotherhood, Vision and Growth, the Legacy Vault, and the integrated
+  member operating system.
+- Added responsive, high-fidelity future interface mockups for every chapter
+  using the established obsidian, violet, gold, and ivory design language.
+- Added persistent chapter progress, Atlas voice state, captions, pause,
+  resume, replay, skip, caption visibility, experience replay, and automatic
+  return to the invitation after completion. None of these optional controls is
+  required to finish the presentation.
+- Added safe health-product boundaries throughout: all data is explicitly
+  illustrative, lab and hormone interpretation remains with qualified care
+  teams, and peptide functionality is limited to tracking clinician-managed
+  plans rather than prescribing or changing dosage.
+- Preserved the secure server-side ElevenLabs route, existing invitation
+  narration handoff, Blair’s `LS-BV-001` access path, the universal QR flow, and
+  `/icon.png`.
+
+Implementation:
+
+- Continuous playback, narration synchronization, pause/replay behavior, and
+  automatic completion live in
+  `src/components/sanctum-preview/tour/ContinuousAtlasTour.tsx`.
+- All 12 product mockups live in
+  `src/components/sanctum-preview/tour/TourVisuals.tsx`.
+- The responsive cinematic visual system lives in
+  `src/components/sanctum-preview/tour/continuous-atlas-tour.module.css`.
+- Chapter order, approved narration, timing fallback, labels, and disclosures
+  are centralized in `src/data/preview/platform-tour.ts`.
+- `src/components/sanctum-preview/SanctumPreviewExperience.tsx` remains the
+  stable invitation-facing boundary and now mounts the continuous tour.
+
+Validated:
+
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 Turbopack production build passes and includes the
+  server-only `/api/atlas/narration` route.
+- The final diff has no whitespace errors.
+- `.env.local` remains excluded by Git.
+
+Remaining before the production member platform:
+
+- Replace every illustrative data panel with approved data contracts and
+  consented integrations only after privacy, retention, clinical review, and
+  member-control requirements are defined.
+- Keep peptide and prescription functionality clinician-directed and
+  audit-focused; do not introduce automated dosing or medical recommendations.
+- Run final physical-device visual and audio QA across iOS, Android, Safari,
+  and Chrome, including slow-network and browser audio-blocking states.
+- Replace the temporary in-memory narration limiter with a distributed limiter
+  before broad access.
+
 ## Current structure
 
 ```text
