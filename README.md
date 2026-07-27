@@ -7,12 +7,15 @@ beta.
 
 - Cinematic mobile-first private entry
 - Canonical Legacy Sanctum emblem at `/icon.png`
-- Narrated or silent entry choice
-- Secure token and PIN verification boundary
+- One universal QR destination at `/`
+- Server-verified Legacy Access Code entry
+- Permanent founder preview mode through `LS-NS-000`
+- Personalized founding-member presentations
+- Atlas-guided or silent entry choice
 - Short-lived, signed, HTTP-only invitation session
 - Database-driven invitation scenes
 - Four-pillar and selected-product scenes
-- Coded future member-app preview
+- Guided interactive future member-app teaser with six simulated touchpoints
 - Atlas-ready narration manifest and captions
 - Invitation responses and minimal allowlisted events
 - Supabase migration with Row Level Security
@@ -28,23 +31,19 @@ beta.
 
 1. Copy `.env.example` to `.env.local`.
 2. Add the Supabase publishable key, server secret key, and a 32-character or longer invitation session secret.
-3. Apply both files in `supabase/migrations/` to the linked Supabase project,
+3. Apply all files in `supabase/migrations/` to the linked Supabase project,
    in numerical order.
 4. Install dependencies with `npm install`.
 5. Run `npm run dev`.
 
-Generate a cryptographically random invitation token, six-digit printed PIN,
-and their database-safe hashes with:
+The public arrival is available at `/`. Every printed QR code should point to
+that same URL. The recipient enters the Legacy Access Code printed inside the
+package, and the server loads his personalized experience.
 
-```bash
-npm run invite:secrets
-```
-
-Treat the plaintext token and PIN printed by this command as private package
-materials. Store only the hashes in Supabase.
-
-The public arrival is available at `/`. Live invitations use
-`/invite/[unguessable-token]`.
+`LS-NS-000` is the permanent founder preview code. It runs the complete
+experience with a visible Preview Mode marker and never records responses or
+analytics. The earlier token-and-PIN route remains available for compatibility
+while existing invitation records are migrated.
 
 For an internal, non-production experience preview, set:
 
@@ -71,7 +70,8 @@ npm run build
 
 - Never commit `.env.local`.
 - Never expose `SUPABASE_SECRET_KEY` or `INVITE_SESSION_SECRET`.
-- Store only SHA-256 invitation-token hashes and scrypt PIN hashes.
+- Store only SHA-256 access-code or invitation-token hashes and scrypt PIN
+  hashes.
 - Public Supabase clients have no direct access policies to invitation data.
 - Member data is protected with ownership-based Row Level Security.
 - Passwordless access does not create public accounts; the submitted email

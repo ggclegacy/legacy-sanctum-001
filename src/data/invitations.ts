@@ -45,6 +45,34 @@ export async function getInviteForVerification(tokenHash: string) {
   return { configured: true as const, record };
 }
 
+export async function getInviteForAccessCode(accessCodeHash: string) {
+  const supabase = getSupabaseServerClient();
+  if (!supabase) return { configured: false as const, record: null };
+
+  const { data, error } = await supabase
+    .from("invites")
+    .select(
+      "id, member_id, pin_hash, status, expires_at, failed_attempts, max_attempts",
+    )
+    .eq("access_code_hash", accessCodeHash)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return { configured: true as const, record: null };
+
+  const record: InviteVerificationRecord = {
+    id: data.id,
+    memberId: data.member_id,
+    pinHash: data.pin_hash,
+    status: data.status as InviteStatus,
+    expiresAt: data.expires_at,
+    failedAttempts: data.failed_attempts,
+    maxAttempts: data.max_attempts,
+  };
+
+  return { configured: true as const, record };
+}
+
 export async function recordFailedAttempt(record: InviteVerificationRecord) {
   const supabase = getSupabaseServerClient();
   if (!supabase) return;

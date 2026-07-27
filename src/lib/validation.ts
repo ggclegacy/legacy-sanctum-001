@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const accessCodeSchema = z
+  .string()
+  .trim()
+  .toUpperCase()
+  .regex(/^LS-[A-Z]{2,8}-\d{3}$/);
+
 export const inviteTokenSchema = z
   .string()
   .trim()

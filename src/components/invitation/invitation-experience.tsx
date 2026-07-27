@@ -40,11 +40,15 @@ const pillars = [
 type InvitationExperienceProps = {
   data: InvitationExperienceData;
   preview?: boolean;
+  trackingEnabled?: boolean;
+  onExit?: () => void;
 };
 
 export function InvitationExperience({
   data,
   preview = false,
+  trackingEnabled = false,
+  onExit,
 }: InvitationExperienceProps) {
   const [preference, setPreference] = useState<NarrationPreference | null>(null);
   const [sceneIndex, setSceneIndex] = useState(0);
@@ -60,6 +64,10 @@ export function InvitationExperience({
     () => data.narration.find((segment) => segment.sceneKey === sceneKey),
     [data.narration, sceneKey],
   );
+  const hasAtlasAudio = useMemo(
+    () => data.narration.some((segment) => Boolean(segment.audioPath)),
+    [data.narration],
+  );
 
   useEffect(() => {
     if (!preference) return;
@@ -67,7 +75,7 @@ export function InvitationExperience({
   }, [preference]);
 
   useEffect(() => {
-    if (!preference || preview) return;
+    if (!preference || !trackingEnabled) return;
     void fetch("/api/invitations/event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,7 +84,7 @@ export function InvitationExperience({
         sceneKey,
       }),
     });
-  }, [preference, preview, sceneKey]);
+  }, [preference, sceneKey, trackingEnabled]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -91,7 +99,7 @@ export function InvitationExperience({
   function choosePreference(next: NarrationPreference) {
     setPreference(next);
     setMuted(next === "silent");
-    if (!preview) {
+    if (trackingEnabled) {
       void fetch("/api/invitations/event", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -125,14 +133,19 @@ export function InvitationExperience({
         <section className="narration-card" aria-labelledby="narration-title">
           <div className="status-line">
             <span className="status-dot" />
-            Access verified
+            {preview ? "Preview access verified" : "Access verified"}
           </div>
           <EmblemStage compact priority />
           <p className="eyebrow">Choose your entry</p>
-          <h1 id="narration-title">How would you like to enter?</h1>
+          <h1 id="narration-title">
+            {hasAtlasAudio
+              ? "How would you like to enter?"
+              : "Enter the guided experience."}
+          </h1>
           <p>
-            Atlas narration plays only when an approved recording exists.
-            Captions remain active in either mode.
+            {hasAtlasAudio
+              ? "Atlas narration is available. Captions remain active in either mode."
+              : "Atlas narration is staged for the audio pass. His complete script is presented as captions now."}
           </p>
           <div className="entry-actions">
             <button
@@ -140,7 +153,7 @@ export function InvitationExperience({
               type="button"
               onClick={() => choosePreference("atlas")}
             >
-              Begin with Atlas
+              {hasAtlasAudio ? "Begin with Atlas" : "Begin guided entry"}
             </button>
             <button
               className="premium-button premium-button--secondary"
@@ -162,10 +175,20 @@ export function InvitationExperience({
     <main className="experience-shell">
       <div className="ambient-grid" aria-hidden="true" />
       <header className="experience-header">
-        <span className="wordmark">Legacy Sanctum</span>
-        <span className="member-marker">
-          {data.memberType} · {data.memberNumber}
-        </span>
+        <div className="experience-brand">
+          <span className="wordmark">Legacy Sanctum</span>
+          {preview ? <span className="preview-mode-badge">Preview mode</span> : null}
+        </div>
+        <div className="experience-identity">
+          <span className="member-marker">
+            {data.memberType} · {data.memberNumber}
+          </span>
+          {onExit ? (
+            <button className="exit-experience" type="button" onClick={onExit}>
+              Exit
+            </button>
+          ) : null}
+        </div>
       </header>
 
       <div
@@ -201,6 +224,7 @@ export function InvitationExperience({
             sceneKey={sceneKey}
             data={data}
             preview={preview}
+            persistResponse={trackingEnabled}
             submitted={submitted}
             onSubmitted={() => setSubmitted(true)}
           />
@@ -278,12 +302,14 @@ function SceneContent({
   sceneKey,
   data,
   preview,
+  persistResponse,
   submitted,
   onSubmitted,
 }: {
   sceneKey: SceneKey;
   data: InvitationExperienceData;
   preview: boolean;
+  persistResponse: boolean;
   submitted: boolean;
   onSubmitted: () => void;
 }) {
@@ -378,7 +404,10 @@ function SceneContent({
             <h2>The products are the beginning, not the boundary.</h2>
             <p>{data.visionMessage}</p>
           </div>
-          <MemberAppPreview />
+          <MemberAppPreview
+            firstName={data.firstName}
+            memberNumber={data.memberNumber}
+          />
         </div>
       );
     case "founding":
@@ -394,6 +423,7 @@ function SceneContent({
       return (
         <ResponseScene
           preview={preview}
+          persistResponse={persistResponse}
           submitted={submitted}
           onSubmitted={onSubmitted}
         />
@@ -412,10 +442,12 @@ function SceneContent({
 
 function ResponseScene({
   preview,
+  persistResponse,
   submitted,
   onSubmitted,
 }: {
   preview: boolean;
+  persistResponse: boolean;
   submitted: boolean;
   onSubmitted: () => void;
 }) {
@@ -428,7 +460,7 @@ function ResponseScene({
     event.preventDefault();
     setError("");
 
-    if (preview) {
+    if (preview || !persistResponse) {
       onSubmitted();
       return;
     }
@@ -458,8 +490,16 @@ function ResponseScene({
     return (
       <div className="response-confirmation">
         <p className="scene-index">07 / Response received</p>
-        <h2>Your intention has been recorded.</h2>
-        <p>Continue to close your private entry experience.</p>
+        <h2>
+          {persistResponse ? "Your intention has been recorded." : "Your intention is clear."}
+        </h2>
+        <p>
+          {persistResponse
+            ? "Continue to close your private entry experience."
+            : preview
+              ? "Preview responses are never saved."
+              : "Response saving will activate when this live invitation is connected."}
+        </p>
       </div>
     );
   }

@@ -6,12 +6,17 @@ Completed:
 
 - Next.js App Router foundation with strict TypeScript, Tailwind CSS, and ESLint
 - Canonical `icon.png` preserved and served from `/icon.png`
-- Mobile-first cinematic arrival and Atlas-or-silent entry choice
-- Dynamic, unguessable invitation route with PIN verification
+- Mobile-first cinematic universal arrival
+- Printed Legacy Access Code verification from the shared home page
+- Permanent `LS-NS-000` founder preview with isolated activity
+- Personalized `LS-BV-001` founding-member presentation
+- Atlas-guided or silent entry choice with approved-audio readiness
 - Signed HTTP-only invitation session
 - Database-driven reusable scene engine
-- Founding-member recognition, pillars, products, platform preview, response,
-  and completion scenes
+- Founding-member recognition, pillars, products, response, and completion
+  scenes
+- Guided interactive member-platform teaser with six simulated touchpoints:
+  Command Center, Atlas, Vitality, Mindset, Brotherhood, and Legacy
 - Supabase migration with Row Level Security
 - Internal non-production visual preview
 
@@ -38,6 +43,9 @@ Completed:
 
 ```text
 src/app/
+  page.tsx             Universal arrival and Legacy Access Code entry
+  api/invitations/
+    access/             Server-side access-code recognition
   invite/[token]/       Phase 1 private induction
   sign-in/              Invitation-only passwordless access
   auth/callback/        Session exchange and member linking
@@ -57,6 +65,7 @@ src/components/
 supabase/migrations/
   0001_invitation_protocol.sql
   0002_member_beta.sql
+  0003_universal_access_codes.sql
 ```
 
 ## Deliberately outside Phase 2
@@ -76,7 +85,8 @@ supabase/migrations/
 - Supabase publishable key
 - Supabase server secret key
 - Invitation session secret
-- Both migrations applied to the live Supabase project
+- All migrations applied to the live Supabase project
+- Live access-code hashes and approved invitation content inserted in Supabase
 - Production site URL and Supabase Auth redirect allowlist
 - Production Vercel environment variables
 - Approved founding-member records and verified email addresses
@@ -89,12 +99,12 @@ supabase/migrations/
 
 ## Security boundary
 
-The app never invents credentials or silently bypasses authentication. If
-required secrets are absent, invitation verification and member access fail
-safely. Member records are available only to authenticated active members
-through ownership-based Row Level Security. The server secret remains
-server-only and is used only for invitation eligibility and initial member
-account linking.
+The app never exposes plaintext access codes to the browser bundle. The initial
+founder and Blair experiences are server-only launch records so the invitation
+can be reviewed before live Supabase credentials are connected. Once a matching
+Supabase record exists, it takes precedence and activates persistent events and
+responses. Member records remain protected through ownership-based Row Level
+Security.
 
 ## Recommended Phase 3
 
