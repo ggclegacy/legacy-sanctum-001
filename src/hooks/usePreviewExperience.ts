@@ -15,9 +15,12 @@ import {
   demonstrationReducer,
 } from "@/lib/preview/preview-state";
 import type {
+  AdaptiveOpportunityId,
+  AdaptiveScenarioId,
   DemonstrationStage,
   PersistedDemonstrationState,
   PillarId,
+  ProtocolComparisonMode,
 } from "@/lib/preview/preview-types";
 
 const demonstrationStages = new Set<DemonstrationStage>([
@@ -29,6 +32,14 @@ const demonstrationStages = new Set<DemonstrationStage>([
   "legacy-insight",
   "free-exploration",
   "closing",
+  "adaptive-transition",
+  "adaptive-analysis",
+  "adaptive-opportunities",
+  "adaptive-reasoning",
+  "adaptive-scenarios",
+  "adaptive-protocol",
+  "adaptive-what-if",
+  "adaptive-closing",
   "complete",
 ]);
 
@@ -43,6 +54,16 @@ function readPersistedState(storageKey: string) {
       !Array.isArray(parsed.meaningfulInteractionIds)
     ) {
       return null;
+    }
+    if (
+      parsed.stage === "complete" &&
+      !Array.isArray(parsed.adaptiveInteractionIds)
+    ) {
+      return {
+        ...parsed,
+        stage: "closing" as const,
+        completed: false,
+      };
     }
     return parsed;
   } catch {
@@ -88,6 +109,14 @@ export function usePreviewExperience({
       activeRelationshipId: state.activeRelationshipId,
       revealedRelationshipIds: state.revealedRelationshipIds,
       meaningfulInteractionIds: state.meaningfulInteractionIds,
+      adaptiveInteractionIds: state.adaptiveInteractionIds,
+      analysisStageIndex: state.analysisStageIndex,
+      selectedOpportunityId: state.selectedOpportunityId,
+      activeReasoningStepId: state.activeReasoningStepId,
+      inspectedReasoningStepIds: state.inspectedReasoningStepIds,
+      scenarioId: state.scenarioId,
+      comparisonMode: state.comparisonMode,
+      sleepAdjustmentMinutes: state.sleepAdjustmentMinutes,
       atlasCaptionId: state.atlasCaptionId,
       captionsEnabled: state.captionsEnabled,
       completed: state.completed,
@@ -201,6 +230,86 @@ export function usePreviewExperience({
     dispatch({ type: "BEGIN_CLOSING" });
   }, []);
 
+  const startAdaptiveIntelligence = useCallback(() => {
+    emitPreviewEvent("adaptive_intelligence_started");
+    dispatch({ type: "START_ADAPTIVE_INTELLIGENCE" });
+  }, []);
+
+  const beginAdaptiveAnalysis = useCallback(() => {
+    dispatch({ type: "BEGIN_ADAPTIVE_ANALYSIS" });
+  }, []);
+
+  const advanceAdaptiveAnalysis = useCallback(() => {
+    emitPreviewEvent("adaptive_analysis_advanced", {
+      interactionId: `analysis:${state.analysisStageIndex}`,
+    });
+    dispatch({ type: "ADVANCE_ADAPTIVE_ANALYSIS" });
+  }, [state.analysisStageIndex]);
+
+  const selectAdaptiveOpportunity = useCallback(
+    (opportunityId: AdaptiveOpportunityId) => {
+      emitPreviewEvent("adaptive_opportunity_selected", {
+        interactionId: opportunityId,
+      });
+      dispatch({ type: "SELECT_ADAPTIVE_OPPORTUNITY", opportunityId });
+    },
+    [],
+  );
+
+  const beginAdaptiveReasoning = useCallback(() => {
+    dispatch({ type: "BEGIN_ADAPTIVE_REASONING" });
+  }, []);
+
+  const inspectReasoningStep = useCallback((stepId: string) => {
+    emitPreviewEvent("adaptive_reasoning_inspected", {
+      interactionId: stepId,
+    });
+    dispatch({ type: "INSPECT_REASONING_STEP", stepId });
+  }, []);
+
+  const beginScenarioControl = useCallback(() => {
+    dispatch({ type: "BEGIN_SCENARIO_CONTROL" });
+  }, []);
+
+  const selectAdaptiveScenario = useCallback(
+    (scenarioId: AdaptiveScenarioId) => {
+      emitPreviewEvent("adaptive_scenario_changed", { scenarioId });
+      dispatch({ type: "SELECT_ADAPTIVE_SCENARIO", scenarioId });
+    },
+    [],
+  );
+
+  const beginAdaptiveProtocol = useCallback(() => {
+    dispatch({ type: "BEGIN_ADAPTIVE_PROTOCOL" });
+  }, []);
+
+  const setProtocolComparison = useCallback(
+    (mode: ProtocolComparisonMode) => {
+      emitPreviewEvent("adaptive_protocol_compared", {
+        interactionId: mode,
+        scenarioId: state.scenarioId,
+      });
+      dispatch({ type: "SET_PROTOCOL_COMPARISON", mode });
+    },
+    [state.scenarioId],
+  );
+
+  const beginAdaptiveWhatIf = useCallback(() => {
+    dispatch({ type: "BEGIN_ADAPTIVE_WHAT_IF" });
+  }, []);
+
+  const setSleepAdjustment = useCallback((minutes: number) => {
+    emitPreviewEvent("adaptive_model_changed", {
+      interactionId: `sleep:${minutes}`,
+      scenarioId: "high-demand",
+    });
+    dispatch({ type: "SET_SLEEP_ADJUSTMENT", minutes });
+  }, []);
+
+  const beginAdaptiveClosing = useCallback(() => {
+    dispatch({ type: "BEGIN_ADAPTIVE_CLOSING" });
+  }, []);
+
   const completeDemonstration = useCallback(() => {
     emitPreviewEvent("demonstration_completed");
     dispatch({ type: "COMPLETE_DEMONSTRATION" });
@@ -246,6 +355,19 @@ export function usePreviewExperience({
     continueToLegacy,
     beginFreeExploration,
     beginClosing,
+    startAdaptiveIntelligence,
+    beginAdaptiveAnalysis,
+    advanceAdaptiveAnalysis,
+    selectAdaptiveOpportunity,
+    beginAdaptiveReasoning,
+    inspectReasoningStep,
+    beginScenarioControl,
+    selectAdaptiveScenario,
+    beginAdaptiveProtocol,
+    setProtocolComparison,
+    beginAdaptiveWhatIf,
+    setSleepAdjustment,
+    beginAdaptiveClosing,
     completeDemonstration,
     reopenDemonstration,
     restartDemonstration,

@@ -221,6 +221,110 @@ only any confirmed spacing or legibility issues. After that, connect the
 existing typed event boundary to an approved privacy-conscious analytics
 destination; do not expand the demonstration with additional shallow modules.
 
+## Phase 3C — Atlas Adaptive Intelligence
+
+### Phase One validation and preservation audit
+
+- The universal arrival and `LS-BV-001` access-code boundary remain healthy;
+  Blair resolves to the existing personalized Founding Member `001` record.
+- The invitation still enters one lazy-loaded Atlas Demonstration boundary and
+  passes recipient identity without exposing access-code logic to the client.
+- The Connected Man is already driven by structured pillar and relationship
+  data, a centralized reducer, session persistence, caption timing, reduced
+  motion, semantic controls, and a reusable immersive shell.
+- Phase One lint, strict TypeScript, route generation, and the optimized
+  production build pass before Phase Two changes.
+- The connected visual browser is unavailable in the current environment.
+  Mobile behavior can be source-reviewed and runtime-compiled here, but final
+  screenshot and physical-device QA remains an explicit release check.
+
+### Implementation plan
+
+1. Preserve the invitation, access code, Connected Man data and interactions,
+   visual tokens, captions, reduced motion, and `/icon.png`.
+2. Extend the existing demonstration stage and persistence model with one
+   Adaptive Intelligence sequence rather than creating a separate application.
+3. Add typed simulated scenarios, analysis states, Atlas opportunities,
+   transparent reasoning steps, protocol periods, and qualitative what-if
+   states.
+4. Transition directly from Connected Man completion into a compressed
+   intelligence-core view and four deliberate analysis stages.
+5. Build three selectable opportunities that expose observations,
+   contributing information, significance, and a carefully qualified possible
+   response.
+6. Build a tappable reasoning chain, three-scenario control, adaptive protocol
+   timeline, original/adapted comparison, and a safe `+45 minutes` sleep model.
+7. Preserve progress in the current member-scoped session record and return to
+   the personalized invitation only after the Adaptive Intelligence closing.
+8. Validate the complete silent and reduced-motion path, mobile breakpoint
+   rules, Blair access, lint, strict TypeScript, and the production build.
+
+### Implementation status
+
+Completed in this pass:
+
+- Extended the existing Atlas Demonstration reducer, persistence record,
+  progress system, event boundary, narration script, and lazy-loaded discovery
+  architecture; no second mini-application or dashboard was introduced.
+- Added a deliberate Connected Man → Adaptive Intelligence transition with a
+  compressed Atlas context core and explicit simulated-data disclosure.
+- Added four controlled analysis states: Reviewing Signals, Connecting
+  Context, Identifying Pressure, and Building Response.
+- Added three interactive opportunities: Protect Recovery, Preserve Decision
+  Quality, and Adapt Training Load. Each exposes observations, contributing
+  information, significance, and qualified possible Atlas responses.
+- Added a five-step tappable reasoning chain so the modeled response is
+  explainable rather than presented as a black-box recommendation.
+- Added Standard, High-Demand, and Travel scenarios with distinct signals,
+  priorities, training behavior, hydration timing, recovery emphasis, protocol
+  timelines, and Atlas explanations.
+- Added Original Day / Atlas-Adapted Day comparison with visible `MOVED
+  EARLIER`, `REDUCED`, `PRIORITIZED`, `SIMPLIFIED`, `ADDED`, and `MAINTAINED`
+  change labels.
+- Added the qualitative `What changes if sleep improves by 45 minutes?` model
+  with limited, protected, balanced, softened, and expanded states—no invented
+  percentages, biological scores, diagnosis, or medical certainty.
+- Added the Adaptive Intelligence closing and moved the invitation return to
+  the end of Phase Two. Existing Phase One-only completed session records are
+  safely migrated to the Connected Man transition rather than skipping the new
+  chamber.
+- Added 320–430px responsive layouts, semantic controls, focus states,
+  touch-sized scenario and comparison actions, captions, reduced-motion
+  behavior, and explicit future-capability language throughout.
+- Updated the social share card and metadata for Adaptive Intelligence without
+  introducing generated UI assets into the experience.
+
+Validated:
+
+- The optimized root route responds with HTTP `200`.
+- `LS-BV-001` resolves to Blair Vidrine, Founding Member `001`, with the
+  original invitation copy.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 Turbopack production build passes.
+- The final diff has no whitespace errors.
+
+Known limitations:
+
+- Atlas remains caption-first and silent until approved voice assets exist.
+- Every scenario, signal, opportunity, adaptation, and what-if state is
+  simulated; no private member data, live integrations, or medical analysis is
+  represented.
+- The connected visual browser remains unavailable, so source-level responsive
+  review and production compilation were completed here, while screenshot and
+  physical-device QA at 320, 375, 390, and 430 pixels remains required.
+- The supplied Phase Two brief ends midway through its architecture section.
+  This implementation covers every functional requirement present in the
+  available attachment without inventing additional platform scope.
+
+Recommended next surgical build:
+
+Run the complete invitation → Connected Man → Adaptive Intelligence journey on
+approved iOS and Android devices, correct only confirmed interaction or
+legibility issues, then connect the existing typed event boundary to an
+approved privacy-conscious analytics destination. Do not add more discovery
+chambers before this sequence is observed with founding members.
+
 ## Current structure
 
 ```text

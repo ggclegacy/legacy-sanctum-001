@@ -4,7 +4,7 @@ import "./globals.css";
 
 const siteTitle = "Legacy Sanctum — Private Member Entry";
 const siteDescription =
-  "A private invitation into Legacy Sanctum and an Atlas-guided preview of the future member intelligence platform.";
+  "A private invitation into Legacy Sanctum and an Atlas-guided demonstration of connected, adaptive member intelligence.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const headerStore = await headers();
@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/og.png",
           width: 1733,
           height: 907,
-          alt: "Legacy Sanctum — The Atlas Demonstration: The Connected Man",
+          alt: "Legacy Sanctum — Adaptive Intelligence: The response changes because the day did",
         },
       ],
     },

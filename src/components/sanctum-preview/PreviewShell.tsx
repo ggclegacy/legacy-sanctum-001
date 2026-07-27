@@ -14,6 +14,7 @@ export function PreviewShell({
   memberNumber,
   stage,
   interactionCount,
+  adaptiveInteractionCount,
   relationshipCount,
   caption,
   captionRevision,
@@ -31,6 +32,7 @@ export function PreviewShell({
   memberNumber: string;
   stage: DemonstrationStage;
   interactionCount: number;
+  adaptiveInteractionCount: number;
   relationshipCount: number;
   caption: string;
   captionRevision: number;
@@ -47,7 +49,7 @@ export function PreviewShell({
   return (
     <section
       className="sanctum-preview-experience atlas-demonstration-experience"
-      aria-label="The Atlas Demonstration: The Connected Man"
+      aria-label="The Atlas Demonstration"
     >
       <AmbientField />
       <PreviewHeader
@@ -59,6 +61,7 @@ export function PreviewShell({
       <PreviewProgress
         stage={stage}
         interactionCount={interactionCount}
+        adaptiveInteractionCount={adaptiveInteractionCount}
         relationshipCount={relationshipCount}
       />
       <div className="preview-stage">{children}</div>
