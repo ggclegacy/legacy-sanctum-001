@@ -39,6 +39,89 @@ Completed:
 - Safe unavailable states when credentials are absent
 - Development-only Command Center preview with no real member data
 
+## Phase 3 — Interactive Future Preview
+
+### Current implementation audit
+
+- The personalized invitation renders `MemberAppPreview` inside the existing
+  `platform` scene, after access-code verification and before the founding,
+  response, and completion scenes.
+- The current preview is a six-step command-center walkthrough contained in one
+  large client component. It is visually polished, but its structure is closer
+  to a guided dashboard sequence than an Atlas-led discovery environment.
+- Invitation identity is passed safely as `firstName` and `memberNumber`; the
+  universal access-code and signed invitation-session boundaries do not need to
+  change.
+- Framer Motion is already installed and the global design tokens already
+  provide the canonical obsidian, gold, violet, ivory, and reduced-motion
+  language.
+- Atlas narration is caption-first with optional approved audio at the
+  invitation layer. The future preview can remain fully silent while exposing a
+  compatible narration model for later audio.
+
+### Phase A implementation plan
+
+1. Replace only the current future-preview component, preserving the invite,
+   access-code, personalization, response, and completion flow.
+2. Add typed discovery, narration, progress, and event models with a centralized
+   preview reducer.
+3. Build a reusable immersive shell, Atlas guide, progress system, and graceful
+   discovery fallback.
+4. Build Human Digital Twin as the single flagship discovery with a curated
+   interactive relationship graph, at least three meaningful node paths, and
+   multiple Atlas insight reveals.
+5. Validate the silent experience, reduced motion, keyboard access, mobile
+   widths down to 320px, lint, type checks, and production build before
+   expanding to Atlas Intelligence or Adaptive Daily Protocol.
+
+### Phase A implementation status
+
+Completed in this pass:
+
+- Central preview state machine with typed discovery lifecycle, narration,
+  progress, completion, replay, caption, reduced-motion, and event state
+- Reusable immersive preview shell, Atlas guide, caption controls, discovery
+  progress, loading state, and recoverable discovery fallback
+- Lazy-loaded Human Digital Twin discovery with ten curated member systems
+- Meaningful interactive relationship paths for Sleep, Recovery, Movement,
+  Nutrition, Bloodwork, Hormones, Stress, Lifestyle, Goals, and Supplements
+- Multiple Atlas insight reveals driven by structured simulated demo data
+- Three-interaction discovery threshold and a clear completion/replay flow
+- Mobile-first layouts with explicit 320–390px behavior, touch-sized controls,
+  no hover-only actions, and no required internal scroll region
+- Silent caption-based narration and `prefers-reduced-motion` support
+- Lightweight development-only typed preview event utility
+- Truthful future-capability and simulated-intelligence disclosures
+- Site-specific social preview metadata and artwork
+
+Validated:
+
+- `LS-BV-001` still resolves to Blair’s personalized member `001` invitation
+- Home route and social metadata respond successfully in the local runtime
+- ESLint passes
+- Next.js route type generation and TypeScript pass
+- Next.js production build passes
+
+Known limitations:
+
+- Final Atlas voice audio is intentionally not connected; captions are the
+  complete experience for this pass.
+- Discovery 02 (Atlas Intelligence) and Discovery 03 (Adaptive Daily Protocol)
+  are represented in the typed roadmap only and are not shallow placeholder
+  screens.
+- Preview analytics remain a safe development event utility until an approved
+  persistence destination exists.
+- The connected visual browser was unavailable during this pass, so responsive
+  behavior was validated through the implemented breakpoint rules and
+  production compilation rather than screenshot-based device QA.
+
+Recommended next surgical build:
+
+Build Atlas Intelligence against the existing controller and shell. Preserve
+the Digital Twin unchanged, add the Reviewing → Connecting → Detecting →
+Prioritizing sequence, and make three opportunity selections reorganize around
+the contributing signals before beginning Adaptive Daily Protocol.
+
 ## Current structure
 
 ```text

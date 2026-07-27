@@ -398,12 +398,7 @@ function SceneContent({
       );
     case "platform":
       return (
-        <div className="platform-scene">
-          <div className="scene-heading">
-            <p className="scene-index">05 / Beyond the box</p>
-            <h2>The products are the beginning, not the boundary.</h2>
-            <p>{data.visionMessage}</p>
-          </div>
+        <div className="platform-scene platform-scene--immersive">
           <MemberAppPreview
             firstName={data.firstName}
             memberNumber={data.memberNumber}
