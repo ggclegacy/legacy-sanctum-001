@@ -227,6 +227,7 @@ export function InvitationExperience({
             persistResponse={trackingEnabled}
             submitted={submitted}
             onSubmitted={() => setSubmitted(true)}
+            onContinue={() => goToScene(sceneIndex + 1)}
           />
         </motion.section>
       </AnimatePresence>
@@ -305,6 +306,7 @@ function SceneContent({
   persistResponse,
   submitted,
   onSubmitted,
+  onContinue,
 }: {
   sceneKey: SceneKey;
   data: InvitationExperienceData;
@@ -312,6 +314,7 @@ function SceneContent({
   persistResponse: boolean;
   submitted: boolean;
   onSubmitted: () => void;
+  onContinue: () => void;
 }) {
   switch (sceneKey) {
     case "recognition":
@@ -401,7 +404,10 @@ function SceneContent({
         <div className="platform-scene platform-scene--immersive">
           <MemberAppPreview
             firstName={data.firstName}
+            fullName={data.displayName}
             memberNumber={data.memberNumber}
+            memberType={data.memberType}
+            onReturnToInvitation={onContinue}
           />
         </div>
       );

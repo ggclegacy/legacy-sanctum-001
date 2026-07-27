@@ -122,6 +122,103 @@ the Digital Twin unchanged, add the Reviewing → Connecting → Detecting →
 Prioritizing sequence, and make three opportunity selections reorganize around
 the contributing signals before beginning Adaptive Daily Protocol.
 
+## Phase 3B — The Atlas Demonstration / The Connected Man
+
+### Existing architecture audit
+
+- The universal arrival, `LS-BV-001` access-code verification, personalized
+  invitation scenes, response flow, and founding-member sequence remain strong
+  and will be preserved unchanged.
+- The current preview already provides a reusable lazy-loaded client boundary,
+  centralized reducer, Atlas caption guide, replay and caption controls,
+  progress state, reduced-motion behavior, structured simulated data, safe
+  fallback UI, and a typed development event utility.
+- Personalized identity currently enters the preview through `firstName` and
+  `memberNumber`; the demonstration can extend this interface with
+  `displayName` and `memberType` without changing the access boundary.
+- The current Human Digital Twin proves interactive relationship reveals, but
+  it begins with ten health-oriented nodes. The new brief requires a wider
+  whole-man model that begins with the four canonical Legacy Sanctum pillars
+  and reveals complexity progressively.
+- The invitation scene controller already owns forward and backward movement.
+  Passing its existing advance action into the demonstration will support a
+  deliberate Atlas-controlled return without duplicating navigation.
+
+### Implementation plan
+
+1. Retain the preview shell, Atlas guide, reduced-motion support, lazy-loading
+   boundary, and event utility; reframe them visibly as “The Atlas
+   Demonstration.”
+2. Replace the Digital Twin-specific state with the guided
+   entry → Vitality → Legacy → free exploration → closing sequence.
+3. Create structured pillar, capability, relationship, member, and Atlas script
+   data with no invented medical or personal facts.
+4. Build The Connected Man as a symmetrical four-pillar system at rest with
+   progressive capability disclosure and curated SVG relationship paths.
+5. Make Vitality and Legacy the two required guided interactions, then unlock
+   six meaningful cross-domain relationships for free exploration.
+6. Track unique pillar, capability, and relationship interactions; preserve the
+   completed state and discoveries in `sessionStorage` for same-session replay.
+7. Connect the Atlas closing action to the existing invitation controller so
+   the recipient returns smoothly to the founding-member scene.
+8. Validate Blair’s access code, silent captions, reduced motion, 320–430px
+   layouts, lint, strict TypeScript, and the production build before release.
+
+### Implementation status
+
+Completed in this pass:
+
+- Reframed the existing preview boundary as “The Atlas Demonstration” while
+  preserving the access portal, signed invitation boundary, personalized
+  invitation scenes, product story, founding-member recognition, response, and
+  completion flow.
+- Built The Connected Man as a centered whole-man model with Vitality, Mindset,
+  Brotherhood, and Legacy held in balance at rest.
+- Added Atlas-led Vitality and Legacy interactions before free exploration,
+  with progressive disclosure of capabilities and cross-domain relationships.
+- Added six curated, simulated relationship paths spanning recovery,
+  focus and decisions, trusted introductions, leadership and family, vitality
+  and leadership, and goal execution.
+- Added unique meaningful-interaction tracking, a six-interaction completion
+  threshold, system reset, completed-state replay, and same-session state
+  restoration keyed to the member number.
+- Added the complete silent Atlas script, always-available captions, explicit
+  simulated-data language, reduced-motion handling, keyboard-accessible
+  controls, mobile touch targets, and 320–430px layout rules.
+- Connected Atlas’s closing action to the existing invitation scene controller
+  so the member returns to the personalized founding-member sequence.
+- Updated the social share artwork and metadata alt text for The Atlas
+  Demonstration without introducing generated imagery into the interface.
+
+Validated:
+
+- `LS-BV-001` resolves to Blair Vidrine, Founding Member `001`, in the
+  production runtime.
+- The root route responds successfully from the optimized production server.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 Turbopack production build passes.
+- The final diff has no whitespace errors.
+
+Known limitations:
+
+- Atlas remains caption-first and silent; no synthetic or unapproved voice
+  asset was introduced.
+- All relationship intelligence is explicitly simulated. No health
+  integrations, medical claims, personal records, or live inference are
+  presented.
+- The connected visual browser was unavailable during this pass. Responsive
+  behavior was validated through source-level breakpoint review, touch-target
+  rules, strict compilation, and the production runtime rather than
+  screenshot-based device QA.
+
+Recommended next surgical build:
+
+Conduct approved-device visual QA at 320, 375, 390, and 430 pixels, then refine
+only any confirmed spacing or legibility issues. After that, connect the
+existing typed event boundary to an approved privacy-conscious analytics
+destination; do not expand the demonstration with additional shallow modules.
+
 ## Current structure
 
 ```text

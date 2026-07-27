@@ -7,40 +7,39 @@ export function PreviewIntroduction({
 }: {
   reducedMotion: boolean;
 }) {
-  const systems = [
-    "Bloodwork",
-    "Sleep",
-    "Recovery",
-    "Hormones",
-    "Nutrition",
-    "Stress",
-    "Movement",
-    "Goals",
+  const pillars = [
+    ["01", "Vitality", "Capacity for the work ahead"],
+    ["02", "Mindset", "Clarity under pressure"],
+    ["03", "Brotherhood", "Trusted relationships in context"],
+    ["04", "Legacy", "The enduring horizon"],
   ];
 
   return (
-    <section className="preview-introduction">
+    <section className="preview-introduction atlas-demonstration-introduction">
       <div className="preview-introduction__copy">
-        <span>Discovery 01</span>
-        <h2>Your Human Digital Twin</h2>
+        <span>The Connected Man</span>
+        <h2>Most platforms track one part of a man’s life.</h2>
         <p>
-          A living relationship model that connects the signals shaping your
-          capacity, performance, and long horizon.
+          Legacy Sanctum is being built to understand how vitality, mindset,
+          brotherhood, and legacy influence one another.
         </p>
       </div>
-      <div className="preview-assembly" aria-label="Systems ready to assemble">
-        {systems.map((system, index) => (
+      <div className="preview-assembly" aria-label="Four connected domains">
+        {pillars.map(([number, pillar, detail], index) => (
           <motion.div
-            key={system}
+            key={pillar}
             initial={reducedMotion ? false : { opacity: 0, x: -14 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
-              delay: reducedMotion ? 0 : index * 0.07,
+              delay: reducedMotion ? 0 : index * 0.09,
               duration: reducedMotion ? 0 : 0.45,
             }}
           >
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <strong>{system}</strong>
+            <span>{number}</span>
+            <strong>
+              {pillar}
+              <small>{detail}</small>
+            </strong>
             <i />
           </motion.div>
         ))}

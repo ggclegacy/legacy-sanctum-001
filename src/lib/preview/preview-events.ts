@@ -11,7 +11,7 @@ export function emitPreviewEvent(
   };
 
   if (process.env.NODE_ENV === "development") {
-    console.info("[Legacy Sanctum preview]", event);
+    console.info("[Legacy Sanctum Atlas Demonstration]", event);
   }
 
   return event;

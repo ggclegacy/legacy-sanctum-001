@@ -1,18 +1,20 @@
-export type PreviewMember = {
-  firstName: string;
-  memberNumber: string;
-  modelLabel: string;
-  dataLabel: string;
-};
+import type { AtlasDemonstrationMember } from "@/lib/preview/preview-types";
 
-export function createPreviewMember(
-  firstName: string,
-  memberNumber: string,
-): PreviewMember {
+export function createDemonstrationMember({
+  firstName,
+  fullName,
+  memberNumber,
+  memberType,
+}: {
+  firstName: string;
+  fullName: string;
+  memberNumber: string;
+  memberType: string;
+}): AtlasDemonstrationMember {
   return {
     firstName,
+    fullName,
     memberNumber,
-    modelLabel: `${firstName}'s evolving model`,
-    dataLabel: "Simulated member intelligence",
+    memberType,
   };
 }

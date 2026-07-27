@@ -1,124 +1,133 @@
 import type {
-  DiscoveryDefinition,
-  PreviewAction,
-  PreviewState,
+  AtlasDemonstrationAction,
+  AtlasDemonstrationState,
 } from "./preview-types";
 
-export const INITIAL_ATLAS_CAPTION_ID = "preview-entry";
+export const INITIAL_ATLAS_CAPTION_ID = "demonstration-entry";
 
-export function createInitialPreviewState(
-  discoveries: DiscoveryDefinition[],
-): PreviewState {
+export function createInitialDemonstrationState(): AtlasDemonstrationState {
   return {
     stage: "entry",
-    activeDiscoveryId: null,
-    discoveryLifecycle: Object.fromEntries(
-      discoveries.map((discovery) => [discovery.id, "locked"]),
-    ),
-    completedDiscoveryIds: [],
-    skippedDiscoveryIds: [],
-    exploredNodeIds: [],
-    activeNodeId: null,
-    activeInsightId: null,
+    activePillarId: null,
+    activeCapabilityId: null,
+    activeRelationshipId: null,
+    revealedRelationshipIds: [],
+    meaningfulInteractionIds: [],
     atlasCaptionId: INITIAL_ATLAS_CAPTION_ID,
     captionRevision: 0,
     captionsEnabled: true,
     narrationEnabled: false,
     narrationMuted: true,
     reducedMotion: false,
-    finished: false,
+    completed: false,
+    hydrated: false,
   };
 }
 
-export function previewReducer(
-  state: PreviewState,
-  action: PreviewAction,
-): PreviewState {
+function appendUnique(current: string[], additions: string[]) {
+  return Array.from(new Set([...current, ...additions]));
+}
+
+export function demonstrationReducer(
+  state: AtlasDemonstrationState,
+  action: AtlasDemonstrationAction,
+): AtlasDemonstrationState {
   switch (action.type) {
-    case "BEGIN_PREVIEW":
+    case "BEGIN_DEMONSTRATION":
       return {
         ...state,
-        stage: "atlas-introduction",
-        atlasCaptionId: "digital-twin-introduction",
-        discoveryLifecycle: {
-          ...state.discoveryLifecycle,
-          "digital-twin": "introduced",
-        },
+        stage: "introduction",
+        atlasCaptionId: "demonstration-introduction",
       };
-    case "ACTIVATE_DISCOVERY":
+    case "START_CONNECTED_MAN":
       return {
         ...state,
-        stage: "discovery-active",
-        activeDiscoveryId: action.discoveryId,
-        activeNodeId: null,
-        activeInsightId: null,
-        atlasCaptionId: "digital-twin-prompt",
-        discoveryLifecycle: {
-          ...state.discoveryLifecycle,
-          [action.discoveryId]: "active",
-        },
+        stage: "guided-vitality",
+        activePillarId: null,
+        activeCapabilityId: null,
+        activeRelationshipId: null,
+        atlasCaptionId: "guided-vitality",
       };
-    case "INTERACT_WITH_NODE": {
-      const alreadyExplored = state.exploredNodeIds.includes(action.nodeId);
+    case "REVEAL_RELATIONSHIP":
       return {
         ...state,
-        stage: "discovery-insight",
-        activeNodeId: action.nodeId,
-        activeInsightId: action.insightId,
+        stage: action.nextStage ?? state.stage,
+        activePillarId: action.pillarId,
+        activeCapabilityId: action.capabilityId ?? null,
+        activeRelationshipId: action.relationshipId,
+        revealedRelationshipIds: appendUnique(state.revealedRelationshipIds, [
+          action.relationshipId,
+        ]),
+        meaningfulInteractionIds: appendUnique(
+          state.meaningfulInteractionIds,
+          action.interactionIds,
+        ),
         atlasCaptionId: action.captionId,
-        exploredNodeIds: alreadyExplored
-          ? state.exploredNodeIds
-          : [...state.exploredNodeIds, action.nodeId],
-        discoveryLifecycle: {
-          ...state.discoveryLifecycle,
-          [action.discoveryId]: "insight-revealed",
-        },
       };
-    }
-    case "COMPLETE_DISCOVERY":
+    case "CONTINUE_TO_LEGACY":
       return {
         ...state,
-        stage: "discovery-complete",
-        activeNodeId: null,
-        activeInsightId: null,
-        atlasCaptionId: action.captionId,
-        completedDiscoveryIds: state.completedDiscoveryIds.includes(
-          action.discoveryId,
-        )
-          ? state.completedDiscoveryIds
-          : [...state.completedDiscoveryIds, action.discoveryId],
-        discoveryLifecycle: {
-          ...state.discoveryLifecycle,
-          [action.discoveryId]: "completed",
-        },
-        finished: true,
+        stage: "guided-legacy",
+        activeCapabilityId: null,
+        atlasCaptionId: "guided-legacy",
       };
-    case "REPLAY_DISCOVERY":
+    case "BEGIN_FREE_EXPLORATION":
       return {
         ...state,
-        stage: "discovery-active",
-        activeDiscoveryId: action.discoveryId,
-        activeNodeId: null,
-        activeInsightId: null,
-        exploredNodeIds: [],
-        atlasCaptionId: "digital-twin-prompt",
-        discoveryLifecycle: {
-          ...state.discoveryLifecycle,
-          [action.discoveryId]: "active",
-        },
-        finished: false,
+        stage: "free-exploration",
+        activePillarId: null,
+        activeCapabilityId: null,
+        activeRelationshipId: null,
+        atlasCaptionId: "free-exploration",
       };
-    case "RESTART_PREVIEW":
+    case "BEGIN_CLOSING":
       return {
         ...state,
-        stage: "entry",
-        activeDiscoveryId: null,
-        activeNodeId: null,
-        activeInsightId: null,
-        exploredNodeIds: [],
-        atlasCaptionId: INITIAL_ATLAS_CAPTION_ID,
-        finished: false,
+        stage: "closing",
+        activePillarId: null,
+        activeCapabilityId: null,
+        activeRelationshipId: null,
+        atlasCaptionId: "demonstration-closing",
       };
+    case "COMPLETE_DEMONSTRATION":
+      return {
+        ...state,
+        stage: "complete",
+        atlasCaptionId: "demonstration-complete",
+        completed: true,
+      };
+    case "REOPEN_DEMONSTRATION":
+      return {
+        ...state,
+        stage: "free-exploration",
+        activePillarId: null,
+        activeCapabilityId: null,
+        activeRelationshipId: null,
+        atlasCaptionId: "free-exploration-return",
+      };
+    case "RESTART_DEMONSTRATION":
+      return {
+        ...createInitialDemonstrationState(),
+        reducedMotion: state.reducedMotion,
+        captionsEnabled: state.captionsEnabled,
+        hydrated: true,
+      };
+    case "RESET_CONNECTED_MAN_VIEW":
+      return {
+        ...state,
+        activePillarId: null,
+        activeCapabilityId: null,
+        activeRelationshipId: null,
+      };
+    case "HYDRATE_DEMONSTRATION":
+      return action.persisted
+        ? {
+            ...state,
+            ...action.persisted,
+            reducedMotion: state.reducedMotion,
+            hydrated: true,
+          }
+        : { ...state, hydrated: true };
     case "TOGGLE_CAPTIONS":
       return { ...state, captionsEnabled: !state.captionsEnabled };
     case "REPLAY_CAPTION":

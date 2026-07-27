@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/og.png",
           width: 1733,
           height: 907,
-          alt: "Legacy Sanctum future member intelligence relationship model",
+          alt: "Legacy Sanctum — The Atlas Demonstration: The Connected Man",
         },
       ],
     },

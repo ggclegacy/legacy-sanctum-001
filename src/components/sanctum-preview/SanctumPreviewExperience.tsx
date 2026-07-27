@@ -1,9 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { createPreviewMember } from "@/data/preview/demo-member";
+import { createDemonstrationMember } from "@/data/preview/demo-member";
 import { usePreviewExperience } from "@/hooks/usePreviewExperience";
 
 import { PreviewCompletion } from "./PreviewCompletion";
@@ -12,73 +13,121 @@ import { PreviewIntroduction } from "./PreviewIntroduction";
 import { PreviewShell } from "./PreviewShell";
 import { DiscoveryBoundary } from "./shared/DiscoveryBoundary";
 
-const DigitalTwinDiscovery = dynamic(
+const ConnectedManSystem = dynamic(
   () =>
     import(
-      "./discoveries/digital-twin/DigitalTwinDiscovery"
-    ).then((module) => module.DigitalTwinDiscovery),
+      "./discoveries/connected-man/ConnectedManSystem"
+    ).then((module) => module.ConnectedManSystem),
   {
     loading: () => (
       <div className="discovery-loading" role="status">
         <i />
-        <span>Atlas is assembling the relationship model…</span>
+        <span>Atlas is opening the demonstration chamber…</span>
       </div>
     ),
   },
 );
 
+const REQUIRED_MEANINGFUL_INTERACTIONS = 6;
+
 export function SanctumPreviewExperience({
   firstName,
+  fullName,
   memberNumber,
+  memberType,
+  onReturnToInvitation,
 }: {
   firstName: string;
+  fullName: string;
   memberNumber: string;
+  memberType: string;
+  onReturnToInvitation: () => void;
 }) {
-  const experience = usePreviewExperience();
-  const { state, discovery } = experience;
-  const member = createPreviewMember(firstName, memberNumber);
-  const lifecycle = state.discoveryLifecycle[discovery.id] ?? "locked";
-  const hasRequiredInteractions =
-    state.exploredNodeIds.length >= discovery.requiredInteractions;
+  const experience = usePreviewExperience({ firstName, memberNumber });
+  const { state } = experience;
+  const returnRequestedRef = useRef(false);
+  const member = createDemonstrationMember({
+    firstName,
+    fullName,
+    memberNumber,
+    memberType,
+  });
+  const enoughExploration =
+    state.meaningfulInteractionIds.length >=
+    REQUIRED_MEANINGFUL_INTERACTIONS;
 
-  let actionLabel = "Open private preview";
+  useEffect(() => {
+    if (state.stage !== "complete" || !returnRequestedRef.current) return;
+    returnRequestedRef.current = false;
+    onReturnToInvitation();
+  }, [onReturnToInvitation, state.stage]);
+
+  let actionLabel = "Begin the demonstration";
   let actionHint = "Atlas-guided · captions active";
   let actionDisabled = false;
   let onAction = () => {
-    void import("./discoveries/digital-twin/DigitalTwinDiscovery");
-    experience.beginPreview();
+    void import("./discoveries/connected-man/ConnectedManSystem");
+    experience.beginDemonstration();
   };
 
-  if (state.stage === "atlas-introduction") {
-    actionLabel = "Assemble the model";
-    actionHint = "Discovery 01 · approximately 75 seconds";
-    onAction = () => experience.activateDiscovery(discovery.id);
-  } else if (
-    state.stage === "discovery-active" ||
-    state.stage === "discovery-insight"
-  ) {
-    actionLabel = hasRequiredInteractions
-      ? "Reveal what Atlas found"
+  if (state.stage === "introduction") {
+    actionLabel = "Reveal the connected man";
+    actionHint = "One guided demonstration · approximately 90 seconds";
+    onAction = experience.startConnectedMan;
+  } else if (state.stage === "guided-vitality") {
+    actionLabel = "Touch Vitality";
+    actionHint = "Atlas has selected the first domain";
+    actionDisabled = true;
+  } else if (state.stage === "vitality-insight") {
+    actionLabel = "Notice what changes";
+    actionHint = "Sleep → Recovery → Daily Protocol";
+    onAction = experience.continueToLegacy;
+  } else if (state.stage === "guided-legacy") {
+    actionLabel = "Touch Legacy";
+    actionHint = "Atlas is extending the model";
+    actionDisabled = true;
+  } else if (state.stage === "legacy-insight") {
+    actionLabel = "Explore the system";
+    actionHint = "The guided sequence is complete";
+    onAction = experience.beginFreeExploration;
+  } else if (state.stage === "free-exploration") {
+    actionLabel = enoughExploration
+      ? "Continue the demonstration"
       : "Keep exploring";
-    actionHint = hasRequiredInteractions
-      ? "The first discovery is ready to close"
-      : `${state.exploredNodeIds.length} of ${discovery.requiredInteractions} systems explored`;
-    actionDisabled = !hasRequiredInteractions;
-    onAction = () => experience.completeDiscovery(discovery.id);
-  } else if (state.stage === "discovery-complete") {
-    actionLabel = "Explore the model again";
-    actionHint = "Continue the invitation with the controls below";
-    onAction = () => experience.replayDiscovery(discovery.id);
+    actionHint = enoughExploration
+      ? "Atlas is ready to close the chamber"
+      : `${state.meaningfulInteractionIds.length} of ${REQUIRED_MEANINGFUL_INTERACTIONS} meaningful interactions`;
+    actionDisabled = !enoughExploration;
+    onAction = experience.beginClosing;
+  } else if (state.stage === "closing") {
+    actionLabel = "Return to your invitation";
+    actionHint = "Your discoveries will remain available this session";
+    onAction = () => {
+      returnRequestedRef.current = true;
+      experience.completeDemonstration();
+    };
+  } else if (state.stage === "complete") {
+    actionLabel = "Return to your invitation";
+    actionHint = "The Atlas Demonstration is complete";
+    onAction = onReturnToInvitation;
   }
+
+  const showConnectedMan = [
+    "guided-vitality",
+    "vitality-insight",
+    "guided-legacy",
+    "legacy-insight",
+    "free-exploration",
+  ].includes(state.stage);
+  const sceneKey = showConnectedMan ? "connected-man" : state.stage;
 
   return (
     <PreviewShell
       firstName={firstName}
       memberNumber={memberNumber}
-      discovery={discovery}
-      lifecycle={lifecycle}
       stage={state.stage}
-      interactionCount={state.exploredNodeIds.length}
+      interactionCount={state.meaningfulInteractionIds.length}
+      relationshipCount={state.revealedRelationshipIds.length}
       caption={experience.caption}
       captionRevision={state.captionRevision}
       captionsEnabled={state.captionsEnabled}
@@ -90,15 +139,11 @@ export function SanctumPreviewExperience({
       onReplayCaption={experience.replayCaption}
       onToggleCaptions={experience.toggleCaptions}
     >
-      <DiscoveryBoundary onReturn={experience.restartPreview}>
+      <DiscoveryBoundary onReturn={experience.restartDemonstration}>
         <AnimatePresence mode="wait">
           <motion.div
             className="preview-stage__scene"
-            key={
-              state.stage === "discovery-insight"
-                ? "discovery-active"
-                : state.stage
-            }
+            key={sceneKey}
             initial={
               state.reducedMotion ? false : { opacity: 0, y: 14, scale: 0.995 }
             }
@@ -115,29 +160,31 @@ export function SanctumPreviewExperience({
                 firstName={firstName}
                 reducedMotion={state.reducedMotion}
               />
-            ) : state.stage === "atlas-introduction" ? (
+            ) : state.stage === "introduction" ? (
               <PreviewIntroduction reducedMotion={state.reducedMotion} />
-            ) : state.stage === "discovery-complete" ? (
+            ) : state.stage === "closing" || state.stage === "complete" ? (
               <PreviewCompletion
                 firstName={firstName}
+                completed={state.stage === "complete"}
                 reducedMotion={state.reducedMotion}
+                onReopen={experience.reopenDemonstration}
               />
             ) : (
-              <DigitalTwinDiscovery
+              <ConnectedManSystem
                 member={member}
-                activeNodeId={state.activeNodeId}
-                activeInsightId={state.activeInsightId}
-                exploredNodeIds={state.exploredNodeIds}
-                requiredInteractions={discovery.requiredInteractions}
-                reducedMotion={state.reducedMotion}
-                onInteract={(nodeId, insightId, captionId) =>
-                  experience.interactWithNode(
-                    discovery.id,
-                    nodeId,
-                    insightId,
-                    captionId,
-                  )
+                stage={state.stage}
+                activePillarId={state.activePillarId}
+                activeCapabilityId={state.activeCapabilityId}
+                activeRelationshipId={state.activeRelationshipId}
+                revealedRelationshipIds={state.revealedRelationshipIds}
+                meaningfulInteractionCount={
+                  state.meaningfulInteractionIds.length
                 }
+                reducedMotion={state.reducedMotion}
+                onSelectPillar={experience.activatePillar}
+                onSelectCapability={experience.activateCapability}
+                onSelectRelationship={experience.activateRelationship}
+                onResetView={experience.resetConnectedManView}
               />
             )}
           </motion.div>

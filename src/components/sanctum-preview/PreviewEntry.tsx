@@ -13,7 +13,7 @@ export function PreviewEntry({
 }) {
   return (
     <motion.section
-      className="preview-entry"
+      className="preview-entry atlas-demonstration-entry"
       initial={reducedMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -23,20 +23,21 @@ export function PreviewEntry({
         <i aria-hidden="true" />
       </div>
       <div className="preview-entry__copy">
-        <span>Private future preview</span>
+        <span>Private founding-member chamber</span>
         <h2>
-          {firstName}, this is not the member app.
-          <em>This is what it will become.</em>
+          The Atlas Demonstration
+          <em>A private preview of what Legacy Sanctum is becoming.</em>
         </h2>
         <p>
-          Atlas is about to open a private simulation of the intelligence layer
-          being built around every Legacy Sanctum member.
+          {firstName}, before we continue, Atlas would like to show you how the
+          future platform will connect the parts of a man’s life that ordinary
+          systems leave isolated.
         </p>
       </div>
       <div className="preview-entry__signals" aria-hidden="true">
-        <span>Living member model</span>
-        <span>Adaptive intelligence</span>
-        <span>Long-horizon context</span>
+        <span>Personally recognized</span>
+        <span>Atlas guided</span>
+        <span>Future capability</span>
       </div>
     </motion.section>
   );

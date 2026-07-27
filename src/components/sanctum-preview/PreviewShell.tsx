@@ -2,11 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import type {
-  DiscoveryDefinition,
-  DiscoveryLifecycle,
-  PreviewStage,
-} from "@/lib/preview/preview-types";
+import type { DemonstrationStage } from "@/lib/preview/preview-types";
 
 import { AtlasGuide } from "./atlas/AtlasGuide";
 import { PreviewHeader } from "./PreviewHeader";
@@ -16,10 +12,9 @@ import { AmbientField } from "./shared/AmbientField";
 export function PreviewShell({
   firstName,
   memberNumber,
-  discovery,
-  lifecycle,
   stage,
   interactionCount,
+  relationshipCount,
   caption,
   captionRevision,
   captionsEnabled,
@@ -34,10 +29,9 @@ export function PreviewShell({
 }: {
   firstName: string;
   memberNumber: string;
-  discovery: DiscoveryDefinition;
-  lifecycle: DiscoveryLifecycle;
-  stage: PreviewStage;
+  stage: DemonstrationStage;
   interactionCount: number;
+  relationshipCount: number;
   caption: string;
   captionRevision: number;
   captionsEnabled: boolean;
@@ -52,8 +46,8 @@ export function PreviewShell({
 }) {
   return (
     <section
-      className="sanctum-preview-experience"
-      aria-label="Atlas-guided future member platform preview"
+      className="sanctum-preview-experience atlas-demonstration-experience"
+      aria-label="The Atlas Demonstration: The Connected Man"
     >
       <AmbientField />
       <PreviewHeader
@@ -63,10 +57,9 @@ export function PreviewShell({
         onToggleCaptions={onToggleCaptions}
       />
       <PreviewProgress
-        discovery={discovery}
-        lifecycle={lifecycle}
         stage={stage}
         interactionCount={interactionCount}
+        relationshipCount={relationshipCount}
       />
       <div className="preview-stage">{children}</div>
       <AtlasGuide

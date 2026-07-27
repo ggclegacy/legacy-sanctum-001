@@ -19,13 +19,13 @@ export function PreviewHeader({
         <Image src="/icon.png" alt="" width={34} height={34} />
         <div>
           <strong>Legacy Sanctum</strong>
-          <span>Future Member Intelligence</span>
+          <span>The Atlas Demonstration</span>
         </div>
       </div>
       <div className="preview-system-state">
         <span>
           <i />
-          Private simulation
+          Private demonstration
         </span>
         <b>
           {firstName} · {memberNumber}

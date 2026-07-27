@@ -1,100 +1,137 @@
-export type PreviewStage =
+export type DemonstrationStage =
   | "entry"
-  | "atlas-introduction"
-  | "discovery-selection"
-  | "discovery-active"
-  | "discovery-insight"
-  | "discovery-complete"
-  | "final-reveal"
-  | "exit";
+  | "introduction"
+  | "guided-vitality"
+  | "vitality-insight"
+  | "guided-legacy"
+  | "legacy-insight"
+  | "free-exploration"
+  | "closing"
+  | "complete";
 
-export type DiscoveryCategory =
-  | "vitality"
-  | "mindset"
-  | "brotherhood"
-  | "legacy"
-  | "atlas";
+export type PillarId = "vitality" | "mindset" | "brotherhood" | "legacy";
 
-export type DiscoveryAvailability = "available" | "coming-soon";
+export type AtlasDemonstrationMember = {
+  firstName: string;
+  fullName: string;
+  memberNumber: string;
+  memberType: string;
+  leadershipContext?: string;
+  personalizedOpening?: string;
+  personalizedClosing?: string;
+};
 
-export type DiscoveryLifecycle =
-  | "locked"
-  | "introduced"
-  | "active"
-  | "interacted"
-  | "insight-revealed"
-  | "completed";
-
-export type DiscoveryDefinition = {
+export type CapabilityDefinition = {
   id: string;
+  label: string;
+  shortLabel: string;
+  relationshipId: string;
+};
+
+export type PillarDefinition = {
+  id: PillarId;
   number: number;
+  label: string;
+  shortLabel: string;
+  statement: string;
+  x: number;
+  y: number;
+  capabilities: CapabilityDefinition[];
+  defaultRelationshipId: string;
+};
+
+export type RelationshipDefinition = {
+  id: string;
+  anchorPillarId: PillarId;
+  relatedPillarIds: PillarId[];
   title: string;
-  shortTitle: string;
-  category: DiscoveryCategory;
-  introductionCaption: string;
-  completionCaption: string;
-  estimatedSeconds: number;
-  requiredInteractions: number;
-  status: DiscoveryAvailability;
+  path: string[];
+  capabilityIds: string[];
+  demonstration: string;
+  atlasInsight: string;
+  response: string;
 };
 
 export type AtlasNarrationSegment = {
   id: string;
-  discoveryId: string;
+  stage: DemonstrationStage;
   trigger: string;
   caption: string;
   audioSrc?: string;
   durationMs?: number;
+  completionTrigger?: string;
 };
 
-export type PreviewState = {
-  stage: PreviewStage;
-  activeDiscoveryId: string | null;
-  discoveryLifecycle: Record<string, DiscoveryLifecycle>;
-  completedDiscoveryIds: string[];
-  skippedDiscoveryIds: string[];
-  exploredNodeIds: string[];
-  activeNodeId: string | null;
-  activeInsightId: string | null;
+export type AtlasDemonstrationState = {
+  stage: DemonstrationStage;
+  activePillarId: PillarId | null;
+  activeCapabilityId: string | null;
+  activeRelationshipId: string | null;
+  revealedRelationshipIds: string[];
+  meaningfulInteractionIds: string[];
   atlasCaptionId: string;
   captionRevision: number;
   captionsEnabled: boolean;
   narrationEnabled: boolean;
   narrationMuted: boolean;
   reducedMotion: boolean;
-  finished: boolean;
+  completed: boolean;
+  hydrated: boolean;
 };
 
-export type PreviewAction =
-  | { type: "BEGIN_PREVIEW" }
-  | { type: "ACTIVATE_DISCOVERY"; discoveryId: string }
+export type PersistedDemonstrationState = Pick<
+  AtlasDemonstrationState,
+  | "stage"
+  | "activePillarId"
+  | "activeCapabilityId"
+  | "activeRelationshipId"
+  | "revealedRelationshipIds"
+  | "meaningfulInteractionIds"
+  | "atlasCaptionId"
+  | "captionsEnabled"
+  | "completed"
+>;
+
+export type AtlasDemonstrationAction =
+  | { type: "BEGIN_DEMONSTRATION" }
+  | { type: "START_CONNECTED_MAN" }
   | {
-      type: "INTERACT_WITH_NODE";
-      discoveryId: string;
-      nodeId: string;
-      insightId: string;
+      type: "REVEAL_RELATIONSHIP";
+      pillarId: PillarId;
+      capabilityId?: string;
+      relationshipId: string;
       captionId: string;
+      interactionIds: string[];
+      nextStage?: DemonstrationStage;
     }
-  | { type: "COMPLETE_DISCOVERY"; discoveryId: string; captionId: string }
-  | { type: "REPLAY_DISCOVERY"; discoveryId: string }
-  | { type: "RESTART_PREVIEW" }
+  | { type: "CONTINUE_TO_LEGACY" }
+  | { type: "BEGIN_FREE_EXPLORATION" }
+  | { type: "BEGIN_CLOSING" }
+  | { type: "COMPLETE_DEMONSTRATION" }
+  | { type: "REOPEN_DEMONSTRATION" }
+  | { type: "RESTART_DEMONSTRATION" }
+  | { type: "RESET_CONNECTED_MAN_VIEW" }
+  | {
+      type: "HYDRATE_DEMONSTRATION";
+      persisted: PersistedDemonstrationState | null;
+    }
   | { type: "TOGGLE_CAPTIONS" }
   | { type: "REPLAY_CAPTION" }
   | { type: "SET_REDUCED_MOTION"; reducedMotion: boolean };
 
 export type PreviewEventName =
-  | "preview_started"
-  | "discovery_opened"
-  | "interaction_completed"
-  | "insight_revealed"
-  | "discovery_completed"
+  | "demonstration_started"
+  | "pillar_activated"
+  | "capability_opened"
+  | "relationship_revealed"
+  | "free_exploration_started"
   | "atlas_replayed"
-  | "preview_skipped"
-  | "preview_completed";
+  | "demonstration_completed"
+  | "demonstration_reopened";
 
 export type PreviewEvent = {
   name: PreviewEventName;
-  discoveryId?: string;
+  pillarId?: PillarId;
   interactionId?: string;
   occurredAt: string;
 };

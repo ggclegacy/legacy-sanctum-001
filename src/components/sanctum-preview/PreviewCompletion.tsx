@@ -4,13 +4,17 @@ import { motion } from "framer-motion";
 
 export function PreviewCompletion({
   firstName,
+  completed,
   reducedMotion,
+  onReopen,
 }: {
   firstName: string;
+  completed: boolean;
   reducedMotion: boolean;
+  onReopen: () => void;
 }) {
   return (
-    <section className="preview-completion">
+    <section className="preview-completion atlas-demonstration-closing">
       <motion.div
         className="preview-completion__mark"
         initial={reducedMotion ? false : { scale: 0.82, opacity: 0 }}
@@ -21,18 +25,39 @@ export function PreviewCompletion({
         <i />
       </motion.div>
       <div>
-        <span>Discovery complete · 01</span>
-        <h2>The model changes as you change.</h2>
-        <p>
-          {firstName}, the future is not a collection of dashboards. It is one
-          intelligence layer that understands the relationships across the
-          whole man.
-        </p>
+        <span>
+          {completed
+            ? "The Atlas Demonstration · Complete"
+            : "The Atlas Demonstration · Closing"}
+        </span>
+        <h2>This is only the beginning.</h2>
+        <div className="atlas-closing-script">
+          <p>What you have seen is not the finished platform.</p>
+          <p>
+            It is the foundation of a private operating system designed around
+            the whole man.
+          </p>
+          <p>
+            {firstName}, as a founding member, you will be among the first
+            invited inside.
+          </p>
+        </div>
+        {completed ? (
+          <button
+            className="atlas-reopen-action"
+            type="button"
+            onClick={onReopen}
+          >
+            Reopen the connected system
+          </button>
+        ) : null}
       </div>
       <div className="preview-completion__next">
-        <span>Next focused build</span>
-        <strong>Atlas Intelligence</strong>
-        <small>Opportunity detection · adaptive reasoning · active response</small>
+        <span>Your discoveries are preserved</span>
+        <strong>The Connected Man</strong>
+        <small>
+          Six relationships · four pillars · one evolving intelligence system
+        </small>
       </div>
     </section>
   );
