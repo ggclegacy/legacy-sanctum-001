@@ -5829,13 +5829,7 @@ p {
   white-space: nowrap;
 }
 
-.connected-pillar:disabled {
-  color: rgb(245 240 230 / 30%);
-  cursor: default;
-  opacity: 0.55;
-}
-
-.connected-pillar:not(:disabled):hover,
+.connected-pillar:hover,
 .connected-pillar:focus-visible,
 .connected-pillar.is-related {
   border-color: rgb(139 97 167 / 50%);

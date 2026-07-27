@@ -175,7 +175,9 @@ Completed in this pass:
 - Built The Connected Man as a centered whole-man model with Vitality, Mindset,
   Brotherhood, and Legacy held in balance at rest.
 - Added Atlas-led Vitality and Legacy interactions before free exploration,
-  with progressive disclosure of capabilities and cross-domain relationships.
+  with progressive disclosure of capabilities and cross-domain relationships;
+  Atlas-selected targets remain visually dominant without disabling the other
+  pillars.
 - Added six curated, simulated relationship paths spanning recovery,
   focus and decisions, trusted introductions, leadership and family, vitality
   and leadership, and goal execution.

@@ -209,6 +209,7 @@ export const connectedManRelationships: RelationshipDefinition[] = [
     capabilityIds: [
       "vitality-sleep",
       "vitality-recovery",
+      "vitality-bloodwork",
       "vitality-protocol",
     ],
     demonstration:

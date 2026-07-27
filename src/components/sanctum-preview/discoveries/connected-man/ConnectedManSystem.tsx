@@ -234,7 +234,6 @@ export function ConnectedManSystem({
                   pillar.defaultRelationshipId,
                 )}
                 atlasTarget={atlasTarget === pillar.id}
-                locked={Boolean(atlasTarget && atlasTarget !== pillar.id)}
                 reducedMotion={reducedMotion}
                 onSelect={() => onSelectPillar(pillar.id)}
               />

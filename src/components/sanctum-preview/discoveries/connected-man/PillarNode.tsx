@@ -10,7 +10,6 @@ export function PillarNode({
   related,
   explored,
   atlasTarget,
-  locked,
   reducedMotion,
   onSelect,
 }: {
@@ -19,7 +18,6 @@ export function PillarNode({
   related: boolean;
   explored: boolean;
   atlasTarget: boolean;
-  locked: boolean;
   reducedMotion: boolean;
   onSelect: () => void;
 }) {
@@ -36,7 +34,6 @@ export function PillarNode({
         .join(" ")}
       style={{ left: `${pillar.x}%`, top: `${pillar.y}%` }}
       type="button"
-      disabled={locked}
       aria-pressed={active}
       aria-label={`Explore ${pillar.label}: ${pillar.statement}`}
       onClick={onSelect}
