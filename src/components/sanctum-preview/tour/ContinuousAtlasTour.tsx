@@ -188,6 +188,7 @@ export function ContinuousAtlasTour({
   return (
     <section
       className={`sanctum-preview-experience ${styles.tour}`}
+      data-active-chapter={chapter.id}
       aria-label="Legacy Sanctum continuous future platform preview"
     >
       <div className={styles.ambient} aria-hidden="true">
@@ -209,6 +210,11 @@ export function ContinuousAtlasTour({
             <strong>Legacy Sanctum</strong>
             <span>Future Member OS · Private demonstration</span>
           </div>
+        </div>
+        <div className={styles.systemStatus} aria-label="Atlas system connected">
+          <i aria-hidden="true" />
+          <span>Atlas system</span>
+          <strong>Connected</strong>
         </div>
         <div className={styles.identity}>
           <span>{memberType}</span>
@@ -240,6 +246,12 @@ export function ContinuousAtlasTour({
         </aside>
 
         <main className={styles.stage}>
+          <div className={styles.stageFrame} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </div>
           <AnimatePresence mode="wait">
             {tourComplete ? (
               <motion.div
@@ -275,6 +287,9 @@ export function ContinuousAtlasTour({
                   <div>
                     <span>{chapter.eyebrow}</span>
                     <h2>{chapter.title}</h2>
+                    <small>
+                      Live future capability · Atlas-guided demonstration
+                    </small>
                   </div>
                   <div className={styles.chapterCounter}>
                     <strong>{chapter.number}</strong>
@@ -309,6 +324,11 @@ export function ContinuousAtlasTour({
           </div>
 
           <div className={styles.captionArea}>
+            <div className={styles.voiceWave} aria-hidden="true">
+              {Array.from({ length: 12 }, (_, index) => (
+                <i key={index} />
+              ))}
+            </div>
             {captionsVisible ? <p>{narration}</p> : <p>Captions hidden</p>}
             {error ? <small role="status">{error}</small> : null}
           </div>

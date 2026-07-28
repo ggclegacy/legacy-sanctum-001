@@ -34,10 +34,21 @@ export function TourVisual({
   return (
     <motion.div
       className={styles.visual}
+      data-chapter={chapterId}
       initial={reducedMotion ? false : { opacity: 0, y: 18, scale: 0.992 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: reducedMotion ? 0 : 0.7 }}
     >
+      <div className={styles.visualAtmosphere} aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </div>
+      <div className={styles.visualTelemetry} aria-hidden="true">
+        <span>LS / {chapterId.replaceAll("-", " ")}</span>
+        <i />
+        <span>Live model</span>
+      </div>
       {content}
     </motion.div>
   );
@@ -54,9 +65,11 @@ function Panel({
 }) {
   return (
     <section className={`${styles.panel} ${className}`}>
+      <div className={styles.panelSheen} aria-hidden="true" />
       <div className={styles.panelLabel}>
         <span>{label}</span>
         <i aria-hidden="true" />
+        <b aria-hidden="true" />
       </div>
       {children}
     </section>
@@ -77,6 +90,12 @@ function CommandCenter({ firstName }: { firstName: string }) {
           <span>03 connected signals</span>
           <span>01 priority shift</span>
           <span>Context reviewed</span>
+        </div>
+        <div className={styles.commandPulse} aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <span>Atlas priority locked</span>
         </div>
       </Panel>
 
@@ -141,13 +160,22 @@ function VitalitySystem() {
             <strong>Protected</strong>
             <small>Contextual state</small>
           </div>
-          {["Sleep", "Recovery", "Movement", "Stress"].map((signal, index) => (
-            <i
-              className={styles[`orbit${index + 1}`]}
-              key={signal}
-              title={signal}
-            />
-          ))}
+          {["Sleep", "Recovery", "Movement", "Stress"].map(
+            (signal, index) => (
+              <span
+                className={styles[`orbitSignal${index + 1}`]}
+                key={signal}
+              >
+                <i aria-hidden="true" />
+                <b>{signal}</b>
+              </span>
+            ),
+          )}
+          <span className={styles.vitalityWave} aria-hidden="true">
+            {Array.from({ length: 18 }, (_, index) => (
+              <i key={index} />
+            ))}
+          </span>
         </div>
       </Panel>
       <Panel label="Connected signals" className={styles.signalMatrix}>
@@ -189,22 +217,48 @@ function VitalitySystem() {
 
 function HormoneTracking() {
   const markers = [
-    ["Total testosterone", "Stable direction", [28, 34, 31, 38, 41, 45]],
-    ["Free testosterone", "Review with clinician", [42, 38, 44, 40, 36, 39]],
-    ["Thyroid context", "Within reference", [31, 33, 34, 35, 35, 36]],
-    ["Cortisol pattern", "Context requested", [48, 43, 52, 46, 41, 44]],
+    ["Total testosterone", "Stable direction", [28, 34, 31, 38, 41, 45], "T"],
+    [
+      "Free testosterone",
+      "Review with clinician",
+      [42, 38, 44, 40, 36, 39],
+      "FT",
+    ],
+    ["Thyroid context", "Within reference", [31, 33, 34, 35, 35, 36], "TH"],
+    ["Cortisol pattern", "Context requested", [48, 43, 52, 46, 41, 44], "C"],
   ] as const;
 
   return (
     <div className={styles.hormoneGrid}>
       <Panel label="Hormone timeline" className={styles.hormoneTimeline}>
+        <div className={styles.hormoneHero}>
+          <div className={styles.hormoneOrb} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <span>H</span>
+          </div>
+          <div>
+            <span className={styles.microLabel}>Longitudinal intelligence</span>
+            <h3>Four systems. One living timeline.</h3>
+            <p>
+              Marker movement is connected to symptoms, protocol history, and
+              care-team context.
+            </p>
+          </div>
+          <div className={styles.hormoneStatus}>
+            <span>04</span>
+            <small>active marker groups</small>
+          </div>
+        </div>
         <div className={styles.markerHeader}>
           <span>Illustrative marker</span>
           <span>Longitudinal view</span>
           <span>Care context</span>
         </div>
-        {markers.map(([label, context, values]) => (
+        {markers.map(([label, context, values, code]) => (
           <div className={styles.markerRow} key={label}>
+            <b className={styles.markerCode}>{code}</b>
             <div>
               <strong>{label}</strong>
               <small>{context}</small>
@@ -214,10 +268,16 @@ function HormoneTracking() {
                 <i
                   key={`${label}-${index}`}
                   style={{ height: `${height}%` }}
-                />
+                >
+                  <span />
+                </i>
               ))}
+              <b aria-hidden="true" />
             </div>
-            <span>Clinician</span>
+            <span>
+              <i aria-hidden="true" />
+              Clinician
+            </span>
           </div>
         ))}
       </Panel>
@@ -229,9 +289,18 @@ function HormoneTracking() {
           <span>Care-team review</span>
         </div>
         <div className={styles.contextCore}>
-          <i />
+          <div className={styles.contextOrbit} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </div>
           <strong>One longitudinal record</strong>
           <small>No automated diagnosis</small>
+        </div>
+        <div className={styles.contextHandshake}>
+          <span>Member record</span>
+          <i aria-hidden="true" />
+          <span>Care team</span>
         </div>
       </Panel>
     </div>
@@ -266,6 +335,12 @@ function BloodworkIntelligence() {
               </i>
             </div>
           ))}
+        </div>
+        <div className={styles.labSpectrum} aria-hidden="true">
+          {Array.from({ length: 22 }, (_, index) => (
+            <i key={index} />
+          ))}
+          <span />
         </div>
       </Panel>
       <Panel label="Atlas change log" className={styles.changeLog}>
@@ -315,6 +390,11 @@ function ProtocolStewardship() {
       </Panel>
       <Panel label="Peptide stewardship" className={styles.peptidePanel}>
         <span className={styles.safetyFlag}>Clinician managed</span>
+        <div className={styles.protocolSeal} aria-hidden="true">
+          <i />
+          <i />
+          <span>Verified</span>
+        </div>
         <h3>Peptide protocol record</h3>
         <div className={styles.peptideRecord}>
           <div>
@@ -371,10 +451,17 @@ function TrainingPerformance() {
       </Panel>
       <Panel label="Performance context" className={styles.performanceContext}>
         <div className={styles.trainingDial}>
+          <i aria-hidden="true" />
+          <i aria-hidden="true" />
           <span>
             <strong>Adapted</strong>
             <small>for today</small>
           </span>
+        </div>
+        <div className={styles.trainingLoad} aria-hidden="true">
+          {[38, 54, 72, 84, 65, 58, 42].map((height, index) => (
+            <i key={index} style={{ height: `${height}%` }} />
+          ))}
         </div>
         <div className={styles.trainingAdjustments}>
           <span>
@@ -418,6 +505,8 @@ function AtlasIntelligence() {
       <div className={styles.atlasCore} aria-label="Atlas intelligence core">
         <i />
         <i />
+        <b />
+        <b />
         <span>Atlas</span>
         <small>Connecting context</small>
       </div>
@@ -461,8 +550,11 @@ function MindsetGrowth() {
       <Panel label="Growth pattern" className={styles.growthPattern}>
         <div className={styles.growthLine}>
           {[42, 55, 51, 67, 63, 78, 86].map((height, index) => (
-            <i key={index} style={{ height: `${height}%` }} />
+            <i key={index} style={{ height: `${height}%` }}>
+              <span />
+            </i>
           ))}
+          <b aria-hidden="true" />
         </div>
         <div className={styles.growthSummary}>
           <span>
@@ -498,6 +590,7 @@ function BrotherhoodNetwork() {
           ["LE", "Legacy entrepreneur", "networkNode4"],
         ].map(([initials, label, className]) => (
           <div className={styles[className]} key={initials}>
+            <i aria-hidden="true" />
             <strong>{initials}</strong>
             <small>{label}</small>
           </div>
@@ -541,6 +634,12 @@ function VisionGrowth() {
           <i />
           <span>Legacy</span>
         </div>
+        <div className={styles.visionField} aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <span>North star</span>
+        </div>
         {[
           ["Business", "Build the enduring company", "Active"],
           ["Family", "Protect time and presence", "Protected"],
@@ -581,6 +680,8 @@ function LegacyVault() {
         <div className={styles.vaultDoor}>
           <i />
           <i />
+          <b />
+          <b />
           <span>Private</span>
           <small>Member-controlled archive</small>
         </div>
@@ -632,6 +733,8 @@ function IntegratedSystem() {
       <div className={styles.integratedCore}>
         <i />
         <i />
+        <b />
+        <b />
         <strong>Atlas</strong>
         <span>Member 001</span>
         <small>One connected operating system</small>

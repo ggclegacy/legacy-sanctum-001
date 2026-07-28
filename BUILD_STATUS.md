@@ -453,6 +453,72 @@ Remaining before the production member platform:
 - Replace the temporary in-memory narration limiter with a distributed limiter
   before broad access.
 
+## Phase 3E — Premium Cinematic Visualization System
+
+Elevated:
+
+- Rebuilt the presentation’s visual language around a chapter-aware cinematic
+  system with individual accent palettes, spatial depth, luminous telemetry,
+  progressive panel reveals, moving signal paths, scanning light, responsive
+  highlights, and restrained glass-and-metal surfaces.
+- Upgraded every one of the 12 future-platform chapters rather than applying a
+  single generic dashboard animation treatment.
+- Added an active-system layer around the entire presentation: chapter-aware
+  ambient color, Atlas connection state, illuminated stage framing, live-model
+  telemetry, voice-wave animation, and more expressive chapter transitions.
+- Added meaningful hover response and visual depth for pointer users while
+  keeping the presentation fully automatic and touch-safe.
+
+Module-specific motion:
+
+- Command Center: live priority core, operating-horizon signal, and responsive
+  directional states.
+- Vitality: breathing system core, orbiting signal labels, biometric waveform,
+  and animated signal-strength reveals.
+- Hormones: premium longitudinal intelligence header, multi-ring hormone core,
+  animated marker channels, pulsating graph nodes, moving analysis sweep,
+  care-team context signals, and a connected-record core.
+- Bloodwork: animated category movement, biomarker spectrum, scan pass, and
+  illuminated change-log states.
+- Protocol and peptide stewardship: live protocol timeline, priority ping,
+  verified care-plan seal, and clinician-managed tracking context.
+- Training: animated performance dial, rotating calibration rings, load
+  profile, and progressive adaptation state.
+- Atlas Intelligence: floating reasoning core, bidirectional context signals,
+  and animated signal handoff between inputs and adapted response.
+- Mindset: progressive growth field, illuminated decision pattern, and moving
+  reflection scan.
+- Brotherhood: pulsing private network, expanding relationship rings, active
+  connection paths, and contextual introduction surfaces.
+- Vision and Growth: animated North Star field, horizon pulses, and moving
+  objective signals.
+- Legacy Vault: breathing vault mechanism, counter-rotating security rings,
+  cross-axis lock geometry, and responsive archive entries.
+- Integrated System: floating Atlas core, radiating system waves, active module
+  nodes, and synchronized cross-system beams.
+
+Performance and accessibility:
+
+- All continuous motion is CSS-driven and scoped to the active chapter; inactive
+  chapters are not rendered.
+- `prefers-reduced-motion` removes continuous animation and transitions while
+  preserving every data view and disclosure.
+- Mobile-specific layouts simplify secondary decorative systems while
+  preserving the primary story, graph legibility, and Atlas captions.
+- No new image assets, external trackers, client secrets, medical claims, or
+  changes to the invitation/QR boundary were introduced.
+
+Validated:
+
+- Root invitation route responds with HTTP `200` in the local runtime.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 Turbopack production build passes.
+- The connected visual browser was unavailable, so responsive QA was completed
+  through explicit 320–700px breakpoint review, runtime route checks, and
+  production compilation. Physical-device visual review remains recommended
+  after deployment.
+
 ## Current structure
 
 ```text
