@@ -48,64 +48,77 @@ export function AppDevicePrologue({
         </div>
 
         <div className={styles.phone}>
-          <i className={styles.sideButton} />
-          <i className={styles.volumeButton} />
-          <div className={styles.phoneFrame}>
-            <div className={styles.phoneHighlight} />
-            <div className={styles.dynamicIsland}>
-              <i />
-              <span />
-            </div>
-            <div className={styles.phoneScreen}>
-              <div className={styles.screenGrid} aria-hidden="true" />
-              <div className={styles.mobileStatus}>
-                <span>9:41</span>
-                <div><i /><i /><i /></div>
-              </div>
-              <div className={styles.mobileBrand}>
-                <Image src="/icon.png" alt="" width={34} height={34} priority />
-                <div>
-                  <strong>Legacy Sanctum</strong>
-                  <span>Member OS</span>
-                </div>
+          <div className={styles.phoneAura} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </div>
+          <div className={styles.phoneFloatShell}>
+            <i className={styles.sideButton} />
+            <i className={styles.volumeButton} />
+            <div className={styles.phoneFrame}>
+              <div className={styles.phoneHighlight} />
+              <div className={styles.phoneRim} aria-hidden="true">
+                <i />
                 <i />
               </div>
-              <div className={styles.mobileWelcome}>
-                <span>Command Center</span>
-                <h3>Welcome, {firstName}.</h3>
-                <p>One private intelligence for the whole man.</p>
+              <div className={styles.dynamicIsland}>
+                <i />
+                <span />
               </div>
-              <div className={styles.mobileAtlas}>
-                <div className={styles.mobileOrb}><i /><i /><span>A</span></div>
-                <div>
-                  <small>Atlas priority</small>
-                  <strong>Protect the recovery window.</strong>
-                  <span>03 signals connected</span>
+              <div className={styles.phoneScreen}>
+                <div className={styles.screenGrid} aria-hidden="true" />
+                <div className={styles.screenLight} aria-hidden="true" />
+                <div className={styles.mobileStatus}>
+                  <span>9:41</span>
+                  <div><i /><i /><i /></div>
                 </div>
-              </div>
-              <div className={styles.mobilePillars}>
-                {["V", "M", "B", "L"].map((pillar, index) => (
-                  <div key={pillar}>
-                    <span>{pillar}</span>
-                    <i style={{ height: `${54 + index * 9}%` }} />
+                <div className={styles.mobileBrand}>
+                  <Image src="/icon.png" alt="" width={34} height={34} priority />
+                  <div>
+                    <strong>Legacy Sanctum</strong>
+                    <span>Member OS</span>
                   </div>
-                ))}
+                  <i />
+                </div>
+                <div className={styles.mobileWelcome}>
+                  <span>Command Center</span>
+                  <h3>Welcome, {firstName}.</h3>
+                  <p>One private intelligence for the whole man.</p>
+                </div>
+                <div className={styles.mobileAtlas}>
+                  <div className={styles.mobileOrb}><i /><i /><span>A</span></div>
+                  <div>
+                    <small>Atlas priority</small>
+                    <strong>Protect the recovery window.</strong>
+                    <span>03 signals connected</span>
+                  </div>
+                </div>
+                <div className={styles.mobilePillars}>
+                  {["V", "M", "B", "L"].map((pillar, index) => (
+                    <div key={pillar}>
+                      <span>{pillar}</span>
+                      <i style={{ height: `${54 + index * 9}%` }} />
+                    </div>
+                  ))}
+                </div>
+                <div className={styles.mobileDock}>
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </div>
+                <div className={styles.screenActivation} aria-hidden="true">
+                  <Image src="/icon.png" alt="" width={72} height={72} />
+                  <span>Legacy Sanctum</span>
+                  <strong>Member system initializing</strong>
+                  <i />
+                </div>
+                <div className={styles.screenPortal} aria-hidden="true" />
               </div>
-              <div className={styles.mobileDock}>
-                <i />
-                <i />
-                <i />
-                <i />
-              </div>
-              <div className={styles.screenActivation} aria-hidden="true">
-                <Image src="/icon.png" alt="" width={72} height={72} />
-                <span>Legacy Sanctum</span>
-                <strong>Member system initializing</strong>
-                <i />
-              </div>
-              <div className={styles.screenPortal} aria-hidden="true" />
+              <div className={styles.glassReflection} aria-hidden="true" />
+              <div className={styles.homeIndicator} />
             </div>
-            <div className={styles.homeIndicator} />
           </div>
         </div>
 

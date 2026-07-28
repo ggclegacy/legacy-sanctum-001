@@ -775,6 +775,35 @@ Validated:
 - Next.js route generation and strict TypeScript pass.
 - The Next.js 16.2.12 webpack production build passes.
 
+### Device motion and material refinement
+
+Completed:
+
+- Removed the phone’s state-change jump by separating the one-time camera
+  arrival, persistent device suspension, display activation, and final
+  screen-dive transforms onto independent layers.
+- Added a dedicated physical suspension shell that continues its slow float
+  without restarting the original entrance animation.
+- Added a controlled pause of the suspension layer during the screen dive so
+  the camera transition begins from the phone’s exact current position.
+- Rebuilt the device lighting with a breathing deep-purple aura, luxury-gold
+  edge emission, asymmetric rim lights, dimensional side controls, deeper
+  contact shadow, and restrained environmental reflection.
+- Added moving glass reflections, a soft interface scan, screen-light drift,
+  powered display vignette, and a corrected Atlas micro-orbit.
+- Smoothed the camera push with additional depth keyframes so the phone remains
+  solid through the approach and only dissolves after the screen fills the
+  viewport.
+- Preserved the prologue copy, Atlas narration, silent flow, mobile layouts,
+  reduced-motion behavior, and automatic Command Center handoff.
+
+Validated:
+
+- The final diff has no whitespace errors.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 webpack production build passes.
+
 ## Current structure
 
 ```text
