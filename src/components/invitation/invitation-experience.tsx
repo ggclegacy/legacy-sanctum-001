@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 
+import { PostDemonstrationExperience } from "@/components/post-demonstration/PostDemonstrationExperience";
 import { MemberAppPreview } from "@/components/preview/member-app-preview";
 import { useAtlasNarration } from "@/hooks/useAtlasNarration";
 import {
@@ -78,6 +79,8 @@ export function InvitationExperience({
   const reduceMotion = useReducedMotion();
 
   const sceneKey = SCENE_KEYS[sceneIndex];
+  const hasEmbeddedNarration =
+    sceneKey === "platform" || sceneKey === "founding";
   const narration = useMemo(
     () => data.narration.find((segment) => segment.sceneKey === sceneKey),
     [data.narration, sceneKey],
@@ -105,7 +108,7 @@ export function InvitationExperience({
   }, [preference, sceneKey, trackingEnabled]);
 
   useEffect(() => {
-    if (preference !== "atlas" || sceneKey === "platform") {
+    if (preference !== "atlas" || hasEmbeddedNarration) {
       stop();
       return;
     }
@@ -118,6 +121,7 @@ export function InvitationExperience({
     }
   }, [
     narration?.script,
+    hasEmbeddedNarration,
     preference,
     sceneKey,
     sceneRevision,
@@ -213,7 +217,7 @@ export function InvitationExperience({
   }
 
   const showAudioControls =
-    preference === "atlas" && sceneKey !== "platform";
+    preference === "atlas" && !hasEmbeddedNarration;
 
   return (
     <main className={`experience-shell ${styles.experience}`}>
@@ -246,28 +250,30 @@ export function InvitationExperience({
         </div>
       </header>
 
-      <div
-        className="scene-progress"
-        role="progressbar"
-        aria-label="Invitation progress"
-        aria-valuemin={1}
-        aria-valuemax={SCENE_KEYS.length}
-        aria-valuenow={sceneIndex + 1}
-      >
-        {SCENE_KEYS.map((key, index) => (
-          <span
-            key={key}
-            className={index <= sceneIndex ? "is-complete" : ""}
-            data-state={
-              index === sceneIndex
-                ? "active"
-                : index < sceneIndex
-                  ? "complete"
-                  : "upcoming"
-            }
-          />
-        ))}
-      </div>
+      {sceneKey !== "founding" ? (
+        <div
+          className="scene-progress"
+          role="progressbar"
+          aria-label="Invitation progress"
+          aria-valuemin={1}
+          aria-valuemax={SCENE_KEYS.length}
+          aria-valuenow={sceneIndex + 1}
+        >
+          {SCENE_KEYS.map((key, index) => (
+            <span
+              key={key}
+              className={index <= sceneIndex ? "is-complete" : ""}
+              data-state={
+                index === sceneIndex
+                  ? "active"
+                  : index < sceneIndex
+                    ? "complete"
+                    : "upcoming"
+              }
+            />
+          ))}
+        </div>
+      ) : null}
 
       <AnimatePresence mode="wait">
         <motion.section
@@ -283,17 +289,21 @@ export function InvitationExperience({
           }}
           aria-live="polite"
         >
-          <div className={styles.sceneFrame} aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-          </div>
-          <div className={styles.sceneTelemetry} aria-hidden="true">
-            <span>LS / {sceneKey}</span>
-            <i />
-            <span>{String(sceneIndex + 1).padStart(2, "0")} of 09</span>
-          </div>
+          {sceneKey !== "founding" ? (
+            <>
+              <div className={styles.sceneFrame} aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <i />
+              </div>
+              <div className={styles.sceneTelemetry} aria-hidden="true">
+                <span>LS / {sceneKey}</span>
+                <i />
+                <span>{String(sceneIndex + 1).padStart(2, "0")} of 09</span>
+              </div>
+            </>
+          ) : null}
           <SceneContent
             sceneKey={sceneKey}
             data={data}
@@ -303,14 +313,16 @@ export function InvitationExperience({
             submitted={submitted}
             onSubmitted={() => setSubmitted(true)}
             onContinue={() => goToScene(sceneIndex + 1)}
+            onReturnToInvitation={() => goToScene(0)}
           />
         </motion.section>
       </AnimatePresence>
 
-      <div
-        className={`caption-region ${styles.captionRegion}`}
-        aria-live="polite"
-      >
+      {sceneKey !== "founding" ? (
+        <div
+          className={`caption-region ${styles.captionRegion}`}
+          aria-live="polite"
+        >
         <div className={styles.voiceSignal} aria-hidden="true">
           {Array.from({ length: 9 }, (_, index) => (
             <i key={index} />
@@ -332,9 +344,11 @@ export function InvitationExperience({
             {narrationError}
           </small>
         ) : null}
-      </div>
+        </div>
+      ) : null}
 
-      <footer className={`scene-controls ${styles.controls}`}>
+      {sceneKey !== "founding" ? (
+        <footer className={`scene-controls ${styles.controls}`}>
         <button
           className="control-button"
           type="button"
@@ -379,7 +393,8 @@ export function InvitationExperience({
         >
           {sceneIndex === SCENE_KEYS.length - 2 ? "Complete" : "Continue"}
         </button>
-      </footer>
+        </footer>
+      ) : null}
 
     </main>
   );
@@ -394,6 +409,7 @@ function SceneContent({
   submitted,
   onSubmitted,
   onContinue,
+  onReturnToInvitation,
 }: {
   sceneKey: SceneKey;
   data: InvitationExperienceData;
@@ -403,6 +419,7 @@ function SceneContent({
   submitted: boolean;
   onSubmitted: () => void;
   onContinue: () => void;
+  onReturnToInvitation: () => void;
 }) {
   switch (sceneKey) {
     case "recognition":
@@ -582,12 +599,12 @@ function SceneContent({
       );
     case "founding":
       return (
-        <div className="founding-scene">
-          <p className="scene-index">06 / Your place in the Sanctum</p>
-          <span className="founding-number">{data.memberNumber}</span>
-          <h2>Founding membership has meaning.</h2>
-          <p>{data.foundingMemberMessage}</p>
-        </div>
+        <PostDemonstrationExperience
+          data={data}
+          narrationEnabled={narrationEnabled}
+          trackingEnabled={persistResponse}
+          onReturnToInvitation={onReturnToInvitation}
+        />
       );
     case "response":
       return (
@@ -646,40 +663,43 @@ function PillarArtifact({ pillar }: { pillar: (typeof pillars)[number]["key"] })
         <i />
         <i />
       </div>
-      {pillar === "vitality" ? (
-        <div className={styles.vitalityArtifact}>
-          <i />
-          <i />
-          <i />
-          <i />
-          <span />
-        </div>
-      ) : null}
-      {pillar === "mindset" ? (
-        <div className={styles.mindsetArtifact}>
-          <i />
-          <i />
-          <i />
-          <span />
-        </div>
-      ) : null}
-      {pillar === "brotherhood" ? (
-        <div className={styles.brotherhoodArtifact}>
-          <span />
-          <i />
-          <i />
-          <i />
-          <i />
-        </div>
-      ) : null}
-      {pillar === "legacy" ? (
-        <div className={styles.legacyArtifact}>
-          <i />
-          <i />
-          <b />
-          <span />
-        </div>
-      ) : null}
+      <div className={styles.pillarIcon}>
+        {pillar === "vitality" ? (
+          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <path d="M18 80 L36 80 L48 50 L58 78 L70 42 L82 78 L100 78" />
+            <rect x="25" y="58" width="10" height="34" rx="5" />
+            <rect x="50" y="44" width="10" height="48" rx="5" />
+            <rect x="78" y="58" width="10" height="34" rx="5" />
+          </svg>
+        ) : pillar === "mindset" ? (
+          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <polygon points="24 60 60 24 96 60 60 96" />
+            <path d="M60 24 L60 96 M24 60 L96 60" />
+            <circle cx="60" cy="60" r="6" />
+            <circle cx="60" cy="34" r="6" />
+            <circle cx="34" cy="60" r="6" />
+            <circle cx="86" cy="60" r="6" />
+          </svg>
+        ) : pillar === "brotherhood" ? (
+          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <circle cx="60" cy="60" r="16" fill="rgba(var(--pillar-accent), 0.18)" stroke="none" />
+            <line x1="34" y1="34" x2="86" y2="86" />
+            <line x1="34" y1="86" x2="86" y2="34" />
+            <circle cx="28" cy="28" r="8" />
+            <circle cx="92" cy="28" r="8" />
+            <circle cx="28" cy="92" r="8" />
+            <circle cx="92" cy="92" r="8" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <path d="M60 18 L98 42 V78 C98 95 78 110 60 102 C42 110 22 95 22 78 V42 Z" fill="rgba(var(--pillar-accent), 0.14)" />
+            <path d="M60 18 L98 42 V78 C98 95 78 110 60 102 C42 110 22 95 22 78 V42 Z" />
+            <rect x="38" y="34" width="44" height="12" rx="6" />
+            <rect x="38" y="58" width="44" height="12" rx="6" />
+            <rect x="38" y="82" width="44" height="12" rx="6" />
+          </svg>
+        )}
+      </div>
     </div>
   );
 }

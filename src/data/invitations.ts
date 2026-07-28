@@ -5,6 +5,8 @@ import type {
   InviteStatus,
   NarrationSegment,
 } from "@/types/invitation";
+import { defaultSmsTemplate } from "@/data/post-demonstration/bridge-data";
+import { getFounderPhoneNumber } from "@/lib/founding/founder-contact";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
 export type InviteVerificationRecord = {
@@ -169,6 +171,9 @@ export async function getInvitationExperience(
     whySelected: content.why_selected,
     visionMessage: content.vision_message,
     foundingMemberMessage: content.founding_member_message,
+    postDemonstrationFounderMessage: content.founder_message,
+    founderPhoneNumber: getFounderPhoneNumber(),
+    smsTemplate: defaultSmsTemplate,
     closingMessage: content.closing_message,
     products: (productsResult.data ?? []).flatMap((row) => {
       const product = Array.isArray(row.products)

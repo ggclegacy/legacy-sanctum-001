@@ -578,6 +578,134 @@ Validated:
 - `.env.local` remains Git-ignored, and no server credential or public
   environment variable was added.
 
+## Phase 3G — Your Place in the Sanctum
+
+### Pre-build audit
+
+- The Atlas Demonstration completes inside
+  `src/components/sanctum-preview/tour/ContinuousAtlasTour.tsx` and returns
+  through the existing `onReturnToInvitation` boundary.
+- That boundary advances directly into the invitation’s existing `founding`
+  scene, making it the correct integration point for one cohesive
+  post-demonstration bridge.
+- The current `founding`, `response`, and `completion` scenes do not yet explain
+  the founding-member position, connect the assigned products to the
+  institution, describe what happens next, distinguish Neil’s final message,
+  or provide a native SMS confirmation action.
+- Invitation identity, product assignments, selection reason, founder message,
+  Atlas voice state, silent mode, reduced-motion state, and the safe invitation
+  event endpoint are already available and will be reused.
+- No SMS deep-link helper or founder phone-number configuration exists.
+- `FOUNDER_PHONE_NUMBER` will be introduced as a centralized public-safe server
+  configuration value. When it is absent, the experience will show the required
+  review-and-copy fallback rather than inventing a number or claiming that a
+  message was sent.
+- The existing project passes ESLint, strict TypeScript, and the Next.js
+  production build before this phase begins.
+- `LS-BV-001` resolves successfully to Blair Vidrine, Founding Member `001`.
+
+### Implementation plan
+
+1. Preserve the invitation, Atlas Demonstration, access-code system, universal
+   QR flow, `/icon.png`, existing narration route, and personalized invitation
+   record.
+2. Replace only the post-demonstration `founding` surface with one integrated,
+   typed bridge that moves through transition, debrief, member reveal,
+   founding position, product connection, next steps, founder message, final
+   induction, and SMS-ready states.
+3. Centralize founding privileges, next-step copy, Atlas narration, and the SMS
+   template in typed data modules.
+4. Reuse the shared Atlas narration hook so voice requests remain server-side,
+   cancel safely, never overlap, and retain silent captions.
+5. Add data-driven product connection using the member’s assigned invitation
+   products without inventing medical reasons or treatment language.
+6. Add one centralized template renderer and iOS/Android SMS-link helper with
+   no automatic sending and no message-content tracking.
+7. Extend the safe invitation event schema with post-demonstration event names
+   while continuing to store no SMS content or device metadata.
+8. Build a mobile-first ceremonial visual system with semantic controls,
+   visible focus, large touch targets, status announcements, reduced motion,
+   and a no-phone/no-launch fallback.
+9. Validate SMS URL generation, silent mode, reduced motion, 320–430px source
+   behavior, Blair personalization, lint, strict TypeScript, and the production
+   build before release.
+
+### Implementation status
+
+Completed:
+
+- Added the cohesive demonstration-complete transition, Atlas debrief,
+  personalized member designation, three controlled founding-privilege
+  reveals, member-assigned product connection, Now / Next / When the Sanctum
+  Opens timeline, data-driven Neil message, final Atlas induction, and
+  SMS-ready state.
+- Reused the shared server-side Atlas narration route with captions, pause,
+  resume, replay, silent mode, request cancellation, and temporary audio URL
+  cleanup intact.
+- Added a typed message-template renderer and tested iOS and Android native SMS
+  deep-link formats.
+- Added a user-controlled `Confirm My Place` action. It prepares but never
+  sends the message, never claims it was sent, and provides copy/retry/return
+  fallback controls when Messages cannot be opened.
+- Added server-only `FOUNDER_PHONE_NUMBER` configuration. No phone metadata or
+  SMS body is recorded by the event system.
+- Added post-demonstration event names without changing the signed invitation
+  boundary or storing message content.
+- Preserved `LS-BV-001`, Blair Vidrine / Member `001`, the universal QR flow,
+  `/icon.png`, the Atlas Demonstration, the existing ElevenLabs security
+  boundary, and all assigned invitation products.
+
+Validated:
+
+- `LS-BV-001` resolves to Blair Vidrine, Founding Member `001`, from the
+  optimized production server.
+- iOS and Android SMS URL unit checks pass.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 webpack production build passes.
+
+Known launch requirement:
+
+- Set `FOUNDER_PHONE_NUMBER` in Vercel using E.164 format to activate the live
+  native Messages destination. Until it is configured, the safe copy-message
+  fallback is shown.
+
+## Phase 3H — Unified Legacy Sanctum Brand System
+
+Completed:
+
+- Audited every application route, shared surface, invitation scene, member
+  view, product presentation, pillar artifact, Atlas chapter, and
+  post-demonstration state for hardcoded color overrides.
+- Established one master hierarchy: obsidian for authority and focus, deep
+  luxury purple for intelligence and spatial depth, luxury gold for action,
+  achievement, and member designation, and ivory only for primary reading
+  contrast.
+- Removed teal, cyan, blue, coral, orange, and neon-purple module accents from
+  Vitality, Hormones, Bloodwork, Protocols, Training, Mindset, Brotherhood,
+  Vision, pillar artifacts, and product artifacts.
+- Rebalanced the Atlas presentation so modules alternate between gold-led and
+  purple-led emphasis while retaining distinct chapter identity without
+  leaving the brand palette.
+- Elevated the member application rail, panels, authentication card, global
+  background, text selection, scrollbar, glows, borders, and raised surfaces
+  with the same centralized brand tokens.
+- Aligned the post-demonstration bridge with the master gold, purple, ivory,
+  and obsidian variables.
+- Preserved all content, functionality, reduced-motion rules, mobile
+  breakpoints, access behavior, voice behavior, and `/icon.png`.
+
+Validated:
+
+- The color audit contains no remaining former teal, cyan, blue, coral, orange,
+  or red module overrides.
+- Root route returns HTTP `200` from the optimized production server.
+- `LS-BV-001` returns HTTP `200` and the correct member identity.
+- The final diff has no whitespace errors.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 webpack production build passes.
+
 ## Current structure
 
 ```text

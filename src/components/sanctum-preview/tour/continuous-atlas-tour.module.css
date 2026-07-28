@@ -1832,7 +1832,7 @@
 }
 
 .captionArea small {
-  color: #d8a9a1;
+  color: var(--gold-highlight);
   font-size: 0.55rem;
   line-height: 1.35;
 }
@@ -2422,58 +2422,58 @@
 }
 
 .visual[data-chapter="vitality"] {
-  --scene-accent: 111 227 198;
-  --scene-secondary: 74 143 122;
+  --scene-accent: 225 194 116;
+  --scene-secondary: 143 101 30;
 }
 
 .visual[data-chapter="hormones"] {
-  --scene-accent: 191 142 255;
-  --scene-secondary: 83 198 255;
+  --scene-accent: 139 97 167;
+  --scene-secondary: 96 65 122;
 }
 
 .visual[data-chapter="bloodwork"] {
-  --scene-accent: 255 117 134;
+  --scene-accent: 196 145 47;
   --scene-secondary: 225 194 116;
 }
 
 .visual[data-chapter="protocols"] {
-  --scene-accent: 85 203 255;
-  --scene-secondary: 96 65 122;
+  --scene-accent: 96 65 122;
+  --scene-secondary: 139 97 167;
 }
 
 .visual[data-chapter="training"] {
-  --scene-accent: 255 168 70;
-  --scene-secondary: 225 194 116;
+  --scene-accent: 225 194 116;
+  --scene-secondary: 196 145 47;
 }
 
 .visual[data-chapter="atlas-intelligence"] {
   --scene-accent: 225 194 116;
-  --scene-secondary: 139 92 246;
+  --scene-secondary: 96 65 122;
 }
 
 .visual[data-chapter="mindset"] {
-  --scene-accent: 181 148 255;
-  --scene-secondary: 113 82 155;
+  --scene-accent: 139 97 167;
+  --scene-secondary: 96 65 122;
 }
 
 .visual[data-chapter="brotherhood"] {
-  --scene-accent: 238 190 108;
-  --scene-secondary: 202 108 76;
+  --scene-accent: 212 173 103;
+  --scene-secondary: 143 101 30;
 }
 
 .visual[data-chapter="vision"] {
-  --scene-accent: 104 187 255;
+  --scene-accent: 96 65 122;
   --scene-secondary: 225 194 116;
 }
 
 .visual[data-chapter="legacy-vault"] {
   --scene-accent: 225 194 116;
-  --scene-secondary: 158 108 43;
+  --scene-secondary: 143 101 30;
 }
 
 .visual[data-chapter="integrated-system"] {
   --scene-accent: 225 194 116;
-  --scene-secondary: 157 104 255;
+  --scene-secondary: 96 65 122;
 }
 
 .visual > :not(.visualAtmosphere, .visualTelemetry) {
@@ -4152,15 +4152,15 @@
   --tour-active: 225 194 116;
 }
 
-.tour[data-active-chapter="vitality"] { --tour-active: 111 227 198; }
-.tour[data-active-chapter="hormones"] { --tour-active: 191 142 255; }
-.tour[data-active-chapter="bloodwork"] { --tour-active: 255 117 134; }
-.tour[data-active-chapter="protocols"] { --tour-active: 85 203 255; }
-.tour[data-active-chapter="training"] { --tour-active: 255 168 70; }
+.tour[data-active-chapter="vitality"] { --tour-active: 225 194 116; }
+.tour[data-active-chapter="hormones"] { --tour-active: 139 97 167; }
+.tour[data-active-chapter="bloodwork"] { --tour-active: 196 145 47; }
+.tour[data-active-chapter="protocols"] { --tour-active: 96 65 122; }
+.tour[data-active-chapter="training"] { --tour-active: 225 194 116; }
 .tour[data-active-chapter="atlas-intelligence"] { --tour-active: 225 194 116; }
-.tour[data-active-chapter="mindset"] { --tour-active: 181 148 255; }
-.tour[data-active-chapter="brotherhood"] { --tour-active: 238 190 108; }
-.tour[data-active-chapter="vision"] { --tour-active: 104 187 255; }
+.tour[data-active-chapter="mindset"] { --tour-active: 139 97 167; }
+.tour[data-active-chapter="brotherhood"] { --tour-active: 212 173 103; }
+.tour[data-active-chapter="vision"] { --tour-active: 96 65 122; }
 .tour[data-active-chapter="legacy-vault"] { --tour-active: 225 194 116; }
 .tour[data-active-chapter="integrated-system"] { --tour-active: 225 194 116; }
 

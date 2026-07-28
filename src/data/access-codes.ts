@@ -2,6 +2,8 @@ import "server-only";
 
 import { createHash } from "node:crypto";
 
+import { defaultSmsTemplate } from "@/data/post-demonstration/bridge-data";
+import { getFounderPhoneNumber } from "@/lib/founding/founder-contact";
 import type { InvitationExperienceData } from "@/types/invitation";
 
 type BuiltInAccessRecord = {
@@ -18,6 +20,7 @@ const standardProducts = [
       "Chosen to make foundational hydration a deliberate part of the day—not an afterthought.",
     usageNote: "Use only as directed on the product label.",
     imagePath: null,
+    pillar: "vitality" as const,
   },
   {
     id: "restoria",
@@ -27,6 +30,7 @@ const standardProducts = [
       "Chosen to reinforce the discipline of recovery after days defined by responsibility and demand.",
     usageNote: "Use only as directed on the product label.",
     imagePath: null,
+    pillar: "vitality" as const,
   },
   {
     id: "nexus",
@@ -36,6 +40,7 @@ const standardProducts = [
       "Chosen to support the long view: consistent energy, resilience, and the ability to keep building.",
     usageNote: "Use only as directed on the product label.",
     imagePath: null,
+    pillar: "vitality" as const,
   },
 ];
 
@@ -54,6 +59,10 @@ const previewInvitation: InvitationExperienceData = {
     "Legacy Sanctum is becoming a private operating system for men building lives, companies, families, and legacies that demand strength for the long horizon.",
   foundingMemberMessage:
     "Founding members enter before public membership opens. Their early access remains complimentary, and their perspective helps shape the standard, the platform, and the circle around it.",
+  postDemonstrationFounderMessage:
+    "Neil,\n\nThis is the bridge between the demonstration and the decision: a measured close that gives the vision weight without turning it into a pitch.\n\nLegacy Sanctum is still early. Every detail should make that beginning feel intentional, credible, and worth entering.\n\n— Neil",
+  founderPhoneNumber: getFounderPhoneNumber(),
+  smsTemplate: defaultSmsTemplate,
   closingMessage:
     "The invitation is ready. Continue refining the experience, then enter again whenever the next chapter is built.",
   products: standardProducts,
@@ -139,6 +148,10 @@ const blairInvitation: InvitationExperienceData = {
     "Legacy Sanctum is becoming a private operating system designed to strengthen the man, sharpen his direction, connect him to the right people, and support the legacy he is still building.",
   foundingMemberMessage:
     "As Founding Member 001, you will receive complimentary early access to the member platform before public membership opens. You are not simply being shown what is coming—your perspective will help shape it.",
+  postDemonstrationFounderMessage:
+    "Blair,\n\nI selected you intentionally.\n\nI respect what you have built, the responsibility you carry, and the standard you represent.\n\nLegacy Sanctum is still early, but I believe it can become something meaningful for men who carry real weight and are building something beyond themselves.\n\nI wanted you among the first to see it.\n\n— Neil",
+  founderPhoneNumber: getFounderPhoneNumber(),
+  smsTemplate: defaultSmsTemplate,
   closingMessage:
     "This is the beginning, Blair. I am honored to have you among the first men invited inside.",
   products: standardProducts,

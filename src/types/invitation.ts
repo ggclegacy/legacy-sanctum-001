@@ -20,6 +20,7 @@ export type InvitationProduct = {
   selectionReason: string;
   usageNote: string | null;
   imagePath: string | null;
+  pillar?: "vitality" | "mindset" | "brotherhood" | "legacy";
 };
 
 export type NarrationSegment = {
@@ -40,6 +41,9 @@ export type InvitationExperienceData = {
   whySelected: string;
   visionMessage: string;
   foundingMemberMessage: string;
+  postDemonstrationFounderMessage?: string | null;
+  founderPhoneNumber?: string | null;
+  smsTemplate?: string | null;
   closingMessage: string;
   products: InvitationProduct[];
   narration: NarrationSegment[];

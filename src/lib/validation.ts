@@ -46,6 +46,16 @@ export const eventSchema = z.object({
     "audio_muted",
     "audio_skipped",
     "experience_completed",
+    "post_demonstration_started",
+    "founding_member_revealed",
+    "founding_privilege_opened",
+    "member_product_viewed",
+    "next_steps_viewed",
+    "founder_message_viewed",
+    "confirm_place_tapped",
+    "sms_launch_attempted",
+    "sms_fallback_shown",
+    "post_demonstration_completed",
   ]),
   sceneKey: z
     .enum([
