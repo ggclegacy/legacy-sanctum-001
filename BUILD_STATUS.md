@@ -706,6 +706,33 @@ Validated:
 - Next.js route generation and strict TypeScript pass.
 - The Next.js 16.2.12 webpack production build passes.
 
+## Phase 3I — Physical Pillar Artifacts
+
+Completed:
+
+- Replaced the four abstract line icons in the invitation’s pillar sequence
+  with four distinct code-native physical artifacts.
+- Vitality is represented by a dimensional living heart with a moving pulse
+  signal, expressing capacity, energy, and health.
+- Mindset is represented by a precision compass that settles onto true north,
+  expressing clarity, discipline, and internal direction.
+- Brotherhood is represented by three standing member figures held inside one
+  bonded circle, expressing trust, accountability, and shared standard.
+- Legacy is represented by a permanent monument rising from three foundation
+  levels, expressing what is built, protected, and left behind.
+- Added material highlights, dimensional shadow, artifact floors, restrained
+  orbital telemetry, and pillar-specific motion without adding images,
+  libraries, or network requests.
+- Preserved the unified obsidian, luxury-gold, and deep-purple palette,
+  responsive pillar-card layout, and `prefers-reduced-motion` behavior.
+
+Validated:
+
+- The final diff has no whitespace errors.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 webpack production build passes.
+
 ## Current structure
 
 ```text

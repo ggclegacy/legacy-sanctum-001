@@ -663,43 +663,59 @@ function PillarArtifact({ pillar }: { pillar: (typeof pillars)[number]["key"] })
         <i />
         <i />
       </div>
-      <div className={styles.pillarIcon}>
+      <div className={styles.physicalArtifact}>
         {pillar === "vitality" ? (
-          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-            <path d="M18 80 L36 80 L48 50 L58 78 L70 42 L82 78 L100 78" />
-            <rect x="25" y="58" width="10" height="34" rx="5" />
-            <rect x="50" y="44" width="10" height="48" rx="5" />
-            <rect x="78" y="58" width="10" height="34" rx="5" />
-          </svg>
+          <div className={styles.vitalityHeart}>
+            <div className={styles.heartBody}>
+              <i />
+              <i />
+            </div>
+            <div className={styles.heartSignal}>
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+            <span>Living capacity</span>
+          </div>
         ) : pillar === "mindset" ? (
-          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-            <polygon points="24 60 60 24 96 60 60 96" />
-            <path d="M60 24 L60 96 M24 60 L96 60" />
-            <circle cx="60" cy="60" r="6" />
-            <circle cx="60" cy="34" r="6" />
-            <circle cx="34" cy="60" r="6" />
-            <circle cx="86" cy="60" r="6" />
-          </svg>
+          <div className={styles.mindsetCompass}>
+            <div className={styles.compassCase}>
+              <i />
+              <i />
+              <b />
+              <span />
+            </div>
+            <small>N</small>
+            <em>True direction</em>
+          </div>
         ) : pillar === "brotherhood" ? (
-          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-            <circle cx="60" cy="60" r="16" fill="rgba(var(--pillar-accent), 0.18)" stroke="none" />
-            <line x1="34" y1="34" x2="86" y2="86" />
-            <line x1="34" y1="86" x2="86" y2="34" />
-            <circle cx="28" cy="28" r="8" />
-            <circle cx="92" cy="28" r="8" />
-            <circle cx="28" cy="92" r="8" />
-            <circle cx="92" cy="92" r="8" />
-          </svg>
+          <div className={styles.brotherhoodCircle}>
+            <div className={styles.memberFigure}><i /></div>
+            <div className={styles.memberFigure}><i /></div>
+            <div className={styles.memberFigure}><i /></div>
+            <b />
+            <span>Bound by standard</span>
+          </div>
         ) : (
-          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-            <path d="M60 18 L98 42 V78 C98 95 78 110 60 102 C42 110 22 95 22 78 V42 Z" fill="rgba(var(--pillar-accent), 0.14)" />
-            <path d="M60 18 L98 42 V78 C98 95 78 110 60 102 C42 110 22 95 22 78 V42 Z" />
-            <rect x="38" y="34" width="44" height="12" rx="6" />
-            <rect x="38" y="58" width="44" height="12" rx="6" />
-            <rect x="38" y="82" width="44" height="12" rx="6" />
-          </svg>
+          <div className={styles.legacyMonument}>
+            <div className={styles.monumentCrown}><i /></div>
+            <div className={styles.monumentColumn}>
+              <i />
+              <i />
+              <i />
+            </div>
+            <div className={styles.monumentFoundation}>
+              <i />
+              <i />
+              <i />
+            </div>
+            <span>Built to endure</span>
+          </div>
         )}
       </div>
+      <div className={styles.artifactFloor}><i /></div>
     </div>
   );
 }
