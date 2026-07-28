@@ -23,6 +23,12 @@ export type PlatformTourChapter = {
   disclosure?: string;
 };
 
+export const platformTourPrologue = {
+  narration:
+    "{firstName}, what you are about to see is an application now in development. Legacy Sanctum is being built as a private member operating system—one place for the signals, decisions, relationships, and legacy that shape the whole man. Step inside.",
+  silentDurationMs: 10_500,
+} as const;
+
 export const platformTourChapters: readonly PlatformTourChapter[] = [
   {
     id: "command-center",

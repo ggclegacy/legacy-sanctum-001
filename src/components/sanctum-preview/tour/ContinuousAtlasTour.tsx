@@ -8,9 +8,14 @@ import { AtlasOrb } from "@/components/sanctum-preview/atlas/AtlasOrb";
 import {
   personalizeTourNarration,
   platformTourChapters,
+  platformTourPrologue,
 } from "@/data/preview/platform-tour";
 import { useAtlasNarration } from "@/hooks/useAtlasNarration";
 
+import {
+  AppDevicePrologue,
+  type DeviceProloguePhase,
+} from "./AppDevicePrologue";
 import { TourVisual } from "./TourVisuals";
 import styles from "./continuous-atlas-tour.module.css";
 
@@ -37,8 +42,12 @@ export function ContinuousAtlasTour({
   const [tourPaused, setTourPaused] = useState(false);
   const [captionsVisible, setCaptionsVisible] = useState(true);
   const [tourComplete, setTourComplete] = useState(false);
+  const [prologueVisible, setPrologueVisible] = useState(true);
+  const [prologuePhase, setProloguePhase] =
+    useState<DeviceProloguePhase>("arrival");
   const reducedMotion = Boolean(useReducedMotion());
   const advanceLockRef = useRef(false);
+  const prologueExitTimerRef = useRef<number | null>(null);
   const {
     status,
     error,
@@ -52,11 +61,39 @@ export function ContinuousAtlasTour({
 
   const chapter = platformTourChapters[chapterIndex];
   const narration = useMemo(
-    () => personalizeTourNarration(chapter.narration, firstName),
-    [chapter.narration, firstName],
+    () =>
+      personalizeTourNarration(
+        prologueVisible ? platformTourPrologue.narration : chapter.narration,
+        firstName,
+      ),
+    [chapter.narration, firstName, prologueVisible],
   );
 
+  const exitPrologue = useCallback(() => {
+    if (advanceLockRef.current) return;
+    advanceLockRef.current = true;
+    stop();
+    setProloguePhase("zoom");
+    if (prologueExitTimerRef.current) {
+      window.clearTimeout(prologueExitTimerRef.current);
+    }
+    prologueExitTimerRef.current = window.setTimeout(
+      () => {
+        setPrologueVisible(false);
+        setProloguePhase("arrival");
+        setPlaybackRevision((current) => current + 1);
+        advanceLockRef.current = false;
+        prologueExitTimerRef.current = null;
+      },
+      reducedMotion ? 80 : 1_650,
+    );
+  }, [reducedMotion, stop]);
+
   const advance = useCallback(() => {
+    if (prologueVisible) {
+      exitPrologue();
+      return;
+    }
     if (advanceLockRef.current) return;
     advanceLockRef.current = true;
     stop();
@@ -71,11 +108,26 @@ export function ContinuousAtlasTour({
     window.setTimeout(() => {
       advanceLockRef.current = false;
     }, 120);
-  }, [chapterIndex, stop]);
+  }, [chapterIndex, exitPrologue, prologueVisible, stop]);
 
   useEffect(() => {
     advanceLockRef.current = false;
-  }, [chapterIndex]);
+  }, [chapterIndex, prologueVisible]);
+
+  useEffect(() => {
+    if (
+      !prologueVisible ||
+      tourPaused ||
+      prologuePhase !== "arrival"
+    ) {
+      return;
+    }
+    const timer = window.setTimeout(
+      () => setProloguePhase("online"),
+      reducedMotion ? 0 : 1_250,
+    );
+    return () => window.clearTimeout(timer);
+  }, [prologuePhase, prologueVisible, reducedMotion, tourPaused]);
 
   useEffect(() => {
     if (tourPaused || tourComplete) {
@@ -89,13 +141,16 @@ export function ContinuousAtlasTour({
 
     void speak(
       narration,
-      `continuous-platform-tour:${chapter.id}:${playbackRevision}`,
+      prologueVisible
+        ? `continuous-platform-tour:app-prologue:${playbackRevision}`
+        : `continuous-platform-tour:${chapter.id}:${playbackRevision}`,
     );
   }, [
     chapter.id,
     narration,
     narrationEnabled,
     playbackRevision,
+    prologueVisible,
     speak,
     stop,
     tourComplete,
@@ -111,13 +166,19 @@ export function ContinuousAtlasTour({
     }
 
     if (!narrationEnabled || status === "error") {
-      const timer = window.setTimeout(advance, chapter.silentDurationMs);
+      const timer = window.setTimeout(
+        advance,
+        prologueVisible
+          ? platformTourPrologue.silentDurationMs
+          : chapter.silentDurationMs,
+      );
       return () => window.clearTimeout(timer);
     }
   }, [
     advance,
     chapter.silentDurationMs,
     narrationEnabled,
+    prologueVisible,
     status,
     tourComplete,
     tourPaused,
@@ -132,7 +193,15 @@ export function ContinuousAtlasTour({
     return () => window.clearTimeout(timer);
   }, [onReturnToInvitation, tourComplete]);
 
-  useEffect(() => stop, [stop]);
+  useEffect(
+    () => () => {
+      stop();
+      if (prologueExitTimerRef.current) {
+        window.clearTimeout(prologueExitTimerRef.current);
+      }
+    },
+    [stop],
+  );
 
   const handlePause = () => {
     setTourPaused(true);
@@ -163,10 +232,16 @@ export function ContinuousAtlasTour({
 
   const handleRestart = () => {
     stop();
+    if (prologueExitTimerRef.current) {
+      window.clearTimeout(prologueExitTimerRef.current);
+      prologueExitTimerRef.current = null;
+    }
     advanceLockRef.current = false;
     setTourComplete(false);
     setTourPaused(false);
     setChapterIndex(0);
+    setPrologueVisible(true);
+    setProloguePhase("arrival");
     setPlaybackRevision((current) => current + 1);
   };
 
@@ -188,7 +263,7 @@ export function ContinuousAtlasTour({
   return (
     <section
       className={`sanctum-preview-experience ${styles.tour}`}
-      data-active-chapter={chapter.id}
+      data-active-chapter={prologueVisible ? "app-prologue" : chapter.id}
       aria-label="Legacy Sanctum continuous future platform preview"
     >
       <div className={styles.ambient} aria-hidden="true">
@@ -208,7 +283,11 @@ export function ContinuousAtlasTour({
           />
           <div>
             <strong>Legacy Sanctum</strong>
-            <span>Future Member OS · Private demonstration</span>
+            <span>
+              {prologueVisible
+                ? "Member application · In development"
+                : "Future Member OS · Private demonstration"}
+            </span>
           </div>
         </div>
         <div className={styles.systemStatus} aria-label="Atlas system connected">
@@ -223,27 +302,40 @@ export function ContinuousAtlasTour({
         </div>
       </header>
 
-      <div className={styles.body}>
-        <aside className={styles.chapterRail} aria-label="Tour progress">
-          <span className={styles.railLabel}>System map</span>
-          <div className={styles.chapterList}>
-            {platformTourChapters.map((item, index) => {
-              const state =
-                index === chapterIndex
-                  ? "active"
-                  : index < chapterIndex
-                    ? "complete"
-                    : "upcoming";
-              return (
-                <div className={styles.chapterItem} data-state={state} key={item.id}>
-                  <span>{item.number}</span>
-                  <strong>{item.navLabel}</strong>
-                  <i aria-hidden="true" />
-                </div>
-              );
-            })}
-          </div>
-        </aside>
+      <div
+        className={styles.body}
+        style={
+          prologueVisible
+            ? { gridTemplateColumns: "minmax(0, 1fr)" }
+            : undefined
+        }
+      >
+        {!prologueVisible ? (
+          <aside className={styles.chapterRail} aria-label="Tour progress">
+            <span className={styles.railLabel}>System map</span>
+            <div className={styles.chapterList}>
+              {platformTourChapters.map((item, index) => {
+                const state =
+                  index === chapterIndex
+                    ? "active"
+                    : index < chapterIndex
+                      ? "complete"
+                      : "upcoming";
+                return (
+                  <div
+                    className={styles.chapterItem}
+                    data-state={state}
+                    key={item.id}
+                  >
+                    <span>{item.number}</span>
+                    <strong>{item.navLabel}</strong>
+                    <i aria-hidden="true" />
+                  </div>
+                );
+              })}
+            </div>
+          </aside>
+        ) : null}
 
         <main className={styles.stage}>
           <div className={styles.stageFrame} aria-hidden="true">
@@ -274,6 +366,13 @@ export function ContinuousAtlasTour({
                   </button>
                 </div>
               </motion.div>
+            ) : prologueVisible ? (
+              <AppDevicePrologue
+                firstName={firstName}
+                memberNumber={memberNumber}
+                phase={prologuePhase}
+                reducedMotion={reducedMotion}
+              />
             ) : (
               <motion.div
                 className={styles.chapter}
@@ -360,7 +459,9 @@ export function ContinuousAtlasTour({
           <div className={styles.progressTrack} aria-hidden="true">
             <motion.i
               animate={{
-                width: `${((chapterIndex + 1) / platformTourChapters.length) * 100}%`,
+                width: prologueVisible
+                  ? "0%"
+                  : `${((chapterIndex + 1) / platformTourChapters.length) * 100}%`,
               }}
               transition={{ duration: reducedMotion ? 0 : 0.5 }}
             />
