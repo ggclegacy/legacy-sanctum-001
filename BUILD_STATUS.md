@@ -519,6 +519,65 @@ Validated:
   production compilation. Physical-device visual review remains recommended
   after deployment.
 
+## Phase 3F — Premium Invitation Induction
+
+Elevated:
+
+- Rebuilt the full pre-platform presentation so the invitation, four-pillar
+  philosophy, and selected-product collection share the same premium visual
+  standard as the future member-app tour.
+- Added one persistent private-induction language across the experience:
+  illuminated stage framing, system telemetry, subtle spatial grid movement,
+  Atlas connection state, enhanced chapter progress, animated caption signal,
+  and responsive control treatments.
+- Preserved all approved narration scripts, scene order, manual presentation
+  controls, access verification, tracking boundaries, invitation identity,
+  `LS-BV-001`, the universal QR flow, and `/icon.png`.
+
+Scene upgrades:
+
+- Entry choice: transformed the narration selection into a private induction
+  portal with an active seal, orbital motion, secure-session assurances, and
+  deeper glass-and-metal presentation.
+- Recognition: added a member-specific identity chamber with animated seal
+  architecture, designation geometry, and confirmed-system states.
+- Founder message: reframed the message as a founder transmission with a
+  premium editorial surface, restrained quote geometry, transmission rail, and
+  formal signature lockup.
+- Selected with intention: added a member-number selection compass, animated
+  targeting rings, and leadership, responsibility, and standard signals derived
+  directly from the approved selection copy.
+- Four pillars: replaced static text cards with four premium animated artifacts.
+  Vitality uses a living biometric signal; Mindset uses an illuminated
+  intelligence prism; Brotherhood uses a connected private network; Legacy uses
+  a protected long-horizon mechanism. Each has its own accent, movement,
+  telemetry, and responsive behavior.
+- Products: replaced the vertical product list with a Founding Collection of
+  three individually presented objects. FORTIUS AQUA uses a fluid morphing
+  system, RESTORIA uses a restorative crescent system, and NEXUS uses a layered
+  convergence core. Each product retains its approved purpose, selection
+  reason, and usage note.
+
+Performance and accessibility:
+
+- All decorative systems are code-native CSS and require no new image assets,
+  external libraries, trackers, or network requests.
+- All continuous motion respects `prefers-reduced-motion`.
+- Desktop uses a four-artifact pillar architecture and three-object product
+  collection; tablet and mobile layouts reorganize these into legible,
+  touch-safe compositions without changing content.
+- The active scene remains the only scene rendered, limiting animation work to
+  the chapter currently being viewed.
+
+Validated:
+
+- Root invitation route responds with HTTP `200` in the local runtime.
+- ESLint passes.
+- Next.js route generation and strict TypeScript pass.
+- The Next.js 16.2.12 Turbopack production build passes.
+- `.env.local` remains Git-ignored, and no server credential or public
+  environment variable was added.
+
 ## Current structure
 
 ```text

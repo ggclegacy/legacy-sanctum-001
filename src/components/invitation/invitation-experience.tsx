@@ -13,30 +13,39 @@ import {
 } from "@/types/invitation";
 
 import { EmblemStage } from "./emblem-stage";
+import styles from "./invitation-premium.module.css";
 
 const pillars = [
   {
+    key: "vitality",
     index: "01",
     name: "Vitality",
+    signal: "Capacity · Energy · Health",
     statement: "The strength, energy, and health required to carry the mission.",
   },
   {
+    key: "mindset",
     index: "02",
     name: "Mindset",
+    signal: "Clarity · Discipline · Resilience",
     statement: "The discipline, clarity, and resilience that direct the man.",
   },
   {
+    key: "brotherhood",
     index: "03",
     name: "Brotherhood",
+    signal: "Trust · Accountability · Access",
     statement:
       "The trusted relationships, accountability, and access that support the ascent.",
   },
   {
+    key: "legacy",
     index: "04",
     name: "Legacy",
+    signal: "Build · Protect · Endure",
     statement: "What he is building, protecting, and leaving behind.",
   },
-];
+] as const;
 
 type InvitationExperienceProps = {
   data: InvitationExperienceData;
@@ -151,14 +160,23 @@ export function InvitationExperience({
 
   if (!preference) {
     return (
-      <main className="sanctum-shell narration-shell">
+      <main className={`sanctum-shell narration-shell ${styles.entryShell}`}>
         <div className="ambient-grid" aria-hidden="true" />
-        <section className="narration-card" aria-labelledby="narration-title">
+        <PremiumAtmosphere />
+        <section
+          className={`narration-card ${styles.entryCard}`}
+          aria-labelledby="narration-title"
+        >
           <div className="status-line">
             <span className="status-dot" />
             {preview ? "Preview access verified" : "Access verified"}
           </div>
-          <EmblemStage compact priority />
+          <div className={styles.entrySeal}>
+            <EmblemStage compact priority />
+            <i aria-hidden="true" />
+            <i aria-hidden="true" />
+            <span>Private induction protocol</span>
+          </div>
           <p className="eyebrow">Choose your entry</p>
           <h1 id="narration-title">How would you like to enter?</h1>
           <p>
@@ -182,6 +200,13 @@ export function InvitationExperience({
               Continue silently
             </button>
           </div>
+          <div className={styles.entryAssurance}>
+            <span>Private session</span>
+            <i aria-hidden="true" />
+            <span>Captions active</span>
+            <i aria-hidden="true" />
+            <span>Member controlled</span>
+          </div>
         </section>
       </main>
     );
@@ -191,14 +216,25 @@ export function InvitationExperience({
     preference === "atlas" && sceneKey !== "platform";
 
   return (
-    <main className="experience-shell">
+    <main className={`experience-shell ${styles.experience}`}>
       <div className="ambient-grid" aria-hidden="true" />
-      <header className="experience-header">
+      <PremiumAtmosphere />
+      <header className={`experience-header ${styles.header}`}>
         <div className="experience-brand">
-          <span className="wordmark">Legacy Sanctum</span>
+          <span className={styles.headerMark} aria-hidden="true">
+            LS
+          </span>
+          <div className={styles.headerBrandCopy}>
+            <span className="wordmark">Legacy Sanctum</span>
+            <small>Private induction system</small>
+          </div>
           {preview ? <span className="preview-mode-badge">Preview mode</span> : null}
         </div>
         <div className="experience-identity">
+          <span className={styles.systemOnline}>
+            <i aria-hidden="true" />
+            Atlas linked
+          </span>
           <span className="member-marker">
             {data.memberType} · {data.memberNumber}
           </span>
@@ -222,6 +258,13 @@ export function InvitationExperience({
           <span
             key={key}
             className={index <= sceneIndex ? "is-complete" : ""}
+            data-state={
+              index === sceneIndex
+                ? "active"
+                : index < sceneIndex
+                  ? "complete"
+                  : "upcoming"
+            }
           />
         ))}
       </div>
@@ -229,7 +272,8 @@ export function InvitationExperience({
       <AnimatePresence mode="wait">
         <motion.section
           key={`${sceneKey}-${sceneRevision}`}
-          className={`scene scene--${sceneKey}`}
+          className={`scene scene--${sceneKey} ${styles.scene}`}
+          data-premium-scene={sceneKey}
           initial={reduceMotion ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           exit={reduceMotion ? undefined : { opacity: 0, y: -14 }}
@@ -239,6 +283,17 @@ export function InvitationExperience({
           }}
           aria-live="polite"
         >
+          <div className={styles.sceneFrame} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </div>
+          <div className={styles.sceneTelemetry} aria-hidden="true">
+            <span>LS / {sceneKey}</span>
+            <i />
+            <span>{String(sceneIndex + 1).padStart(2, "0")} of 09</span>
+          </div>
           <SceneContent
             sceneKey={sceneKey}
             data={data}
@@ -252,7 +307,15 @@ export function InvitationExperience({
         </motion.section>
       </AnimatePresence>
 
-      <div className="caption-region" aria-live="polite">
+      <div
+        className={`caption-region ${styles.captionRegion}`}
+        aria-live="polite"
+      >
+        <div className={styles.voiceSignal} aria-hidden="true">
+          {Array.from({ length: 9 }, (_, index) => (
+            <i key={index} />
+          ))}
+        </div>
         <span>
           {preference === "atlas"
               ? sceneKey === "platform"
@@ -271,7 +334,7 @@ export function InvitationExperience({
         ) : null}
       </div>
 
-      <footer className="scene-controls">
+      <footer className={`scene-controls ${styles.controls}`}>
         <button
           className="control-button"
           type="button"
@@ -344,73 +407,153 @@ function SceneContent({
   switch (sceneKey) {
     case "recognition":
       return (
-        <div className="scene-centered">
-          <EmblemStage compact />
-          <p className="eyebrow">Access recognized</p>
-          <h1>Welcome, {data.firstName}.</h1>
-          <p className="member-designation">
-            {data.memberType} <span>·</span> {data.memberNumber}
-          </p>
-          {data.customHeadline ? (
-            <p className="scene-lede">{data.customHeadline}</p>
-          ) : null}
+        <div className={`scene-centered ${styles.recognitionScene}`}>
+          <div className={styles.recognitionSeal}>
+            <EmblemStage compact />
+            <i aria-hidden="true" />
+            <i aria-hidden="true" />
+            <span>{data.memberNumber}</span>
+          </div>
+          <div className={styles.recognitionCopy}>
+            <p className="eyebrow">Access recognized</p>
+            <h1>Welcome, {data.firstName}.</h1>
+            <p className="member-designation">
+              {data.memberType} <span>·</span> {data.memberNumber}
+            </p>
+            {data.customHeadline ? (
+              <p className="scene-lede">{data.customHeadline}</p>
+            ) : null}
+            <div className={styles.recognitionStatus}>
+              <span>Identity confirmed</span>
+              <span>Invitation active</span>
+              <span>Atlas ready</span>
+            </div>
+          </div>
         </div>
       );
     case "founder":
       return (
-        <div className="editorial-scene">
-          <p className="scene-index">01 / A message from the founder</p>
-          <blockquote>{data.founderMessage}</blockquote>
-          <p className="signature">— Neil</p>
+        <div className={`editorial-scene ${styles.founderScene}`}>
+          <div className={styles.founderRail}>
+            <span>01</span>
+            <i aria-hidden="true" />
+            <small>Founder transmission</small>
+          </div>
+          <div className={styles.founderMessage}>
+            <p className="scene-index">01 / A message from the founder</p>
+            <span className={styles.quoteMark} aria-hidden="true">
+              “
+            </span>
+            <blockquote>{data.founderMessage}</blockquote>
+            <div className={styles.signatureLockup}>
+              <p className="signature">— Neil</p>
+              <span>Founder · Legacy Sanctum</span>
+            </div>
+          </div>
         </div>
       );
     case "selection":
       return (
-        <div className="editorial-scene">
-          <p className="scene-index">02 / Selected with intention</p>
-          <h2>This invitation was created for you.</h2>
-          <p className="scene-body">{data.whySelected}</p>
+        <div className={`editorial-scene ${styles.selectionScene}`}>
+          <div className={styles.selectionCopy}>
+            <p className="scene-index">02 / Selected with intention</p>
+            <h2>This invitation was created for you.</h2>
+            <p className="scene-body">{data.whySelected}</p>
+            <div className={styles.selectionSignals}>
+              <span>Leadership</span>
+              <span>Responsibility</span>
+              <span>Standard</span>
+            </div>
+          </div>
+          <SelectionCompass memberNumber={data.memberNumber} />
         </div>
       );
     case "pillars":
       return (
-        <div className="pillars-scene">
-          <div className="scene-heading">
+        <div className={`pillars-scene ${styles.pillarsScene}`}>
+          <div className={`scene-heading ${styles.sceneHeading}`}>
             <p className="scene-index">03 / The foundation</p>
             <h2>Four disciplines. One enduring man.</h2>
+            <p>
+              A complete operating philosophy for the strength, judgment,
+              relationships, and work that define a man’s long horizon.
+            </p>
           </div>
-          <div className="pillar-grid">
+          <div className={`pillar-grid ${styles.pillarGrid}`}>
             {pillars.map((pillar) => (
-              <article className="pillar-card" key={pillar.name}>
-                <span>{pillar.index}</span>
-                <h3>{pillar.name}</h3>
-                <p>{pillar.statement}</p>
+              <article
+                className={`pillar-card ${styles.pillarCard}`}
+                data-pillar={pillar.key}
+                key={pillar.name}
+              >
+                <div className={styles.pillarTopline}>
+                  <span>{pillar.index}</span>
+                  <small>{pillar.signal}</small>
+                </div>
+                <PillarArtifact pillar={pillar.key} />
+                <div className={styles.pillarCopy}>
+                  <h3>{pillar.name}</h3>
+                  <p>{pillar.statement}</p>
+                </div>
+                <div className={styles.pillarEnergy} aria-hidden="true">
+                  <i />
+                </div>
               </article>
             ))}
+          </div>
+          <div className={styles.pillarUnifier}>
+            <span>Vitality</span>
+            <i />
+            <span>Mindset</span>
+            <i />
+            <span>Brotherhood</span>
+            <i />
+            <span>Legacy</span>
           </div>
         </div>
       );
     case "products":
       return (
-        <div className="products-scene">
-          <div className="scene-heading">
+        <div className={`products-scene ${styles.productsScene}`}>
+          <div className={`scene-heading ${styles.productsHeading}`}>
             <p className="scene-index">04 / Selected for your box</p>
             <h2>Tools for the work ahead.</h2>
+            <div className={styles.collectionMeta}>
+              <span>
+                <strong>{String(data.products.length).padStart(2, "0")}</strong>
+                selected protocols
+              </span>
+              <i aria-hidden="true" />
+              <span>Founding collection · private issue</span>
+            </div>
           </div>
           {data.products.length ? (
-            <div className="product-list">
+            <div className={`product-list ${styles.productGrid}`}>
               {data.products.map((product, index) => (
-                <article className="product-card" key={product.id}>
-                  <span className="product-index">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
+                <article
+                  className={`product-card ${styles.productCard}`}
+                  data-product={product.id}
+                  key={product.id}
+                >
+                  <div className={styles.productArtifactStage}>
+                    <ProductArtifact productId={product.id} />
+                    <span className={styles.productIndex}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <small>Selected for {data.firstName}</small>
+                  </div>
+                  <div className={styles.productCopy}>
                     <p className="micro-label">{product.shortPurpose}</p>
                     <h3>{product.name}</h3>
                     <p>{product.selectionReason}</p>
                     {product.usageNote ? (
                       <small>{product.usageNote}</small>
                     ) : null}
+                  </div>
+                  <div className={styles.productSignal} aria-hidden="true">
+                    {Array.from({ length: 12 }, (_, signalIndex) => (
+                      <i key={signalIndex} />
+                    ))}
                   </div>
                 </article>
               ))}
@@ -465,6 +608,115 @@ function SceneContent({
         </div>
       );
   }
+}
+
+function PremiumAtmosphere() {
+  return (
+    <div className={styles.atmosphere} aria-hidden="true">
+      <i />
+      <i />
+      <i />
+      <span />
+    </div>
+  );
+}
+
+function SelectionCompass({ memberNumber }: { memberNumber: string }) {
+  return (
+    <div className={styles.selectionCompass} aria-hidden="true">
+      <i />
+      <i />
+      <i />
+      <b />
+      <b />
+      <div>
+        <span>{memberNumber}</span>
+        <strong>Selected</strong>
+        <small>with intention</small>
+      </div>
+    </div>
+  );
+}
+
+function PillarArtifact({ pillar }: { pillar: (typeof pillars)[number]["key"] }) {
+  return (
+    <div className={styles.pillarArtifact} data-artifact={pillar} aria-hidden="true">
+      <div className={styles.artifactRings}>
+        <i />
+        <i />
+        <i />
+      </div>
+      {pillar === "vitality" ? (
+        <div className={styles.vitalityArtifact}>
+          <i />
+          <i />
+          <i />
+          <i />
+          <span />
+        </div>
+      ) : null}
+      {pillar === "mindset" ? (
+        <div className={styles.mindsetArtifact}>
+          <i />
+          <i />
+          <i />
+          <span />
+        </div>
+      ) : null}
+      {pillar === "brotherhood" ? (
+        <div className={styles.brotherhoodArtifact}>
+          <span />
+          <i />
+          <i />
+          <i />
+          <i />
+        </div>
+      ) : null}
+      {pillar === "legacy" ? (
+        <div className={styles.legacyArtifact}>
+          <i />
+          <i />
+          <b />
+          <span />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function ProductArtifact({ productId }: { productId: string }) {
+  const artifact =
+    productId === "fortius-aqua"
+      ? "aqua"
+      : productId === "restoria"
+        ? "restoria"
+        : "nexus";
+
+  return (
+    <div
+      className={styles.productArtifact}
+      data-artifact={artifact}
+      aria-hidden="true"
+    >
+      <div className={styles.productOrbit}>
+        <i />
+        <i />
+      </div>
+      <div className={styles.productCore}>
+        <i />
+        <i />
+        <span>
+          {artifact === "aqua" ? "A" : artifact === "restoria" ? "R" : "N"}
+        </span>
+      </div>
+      <div className={styles.productParticles}>
+        <i />
+        <i />
+        <i />
+        <i />
+      </div>
+    </div>
+  );
 }
 
 function ResponseScene({
