@@ -100,12 +100,12 @@ export const platformTourChapters: readonly PlatformTourChapter[] = [
     id: "atlas-intelligence",
     number: "07",
     navLabel: "Atlas",
-    eyebrow: "Adaptive intelligence",
-    title: "Context changes the response.",
+    eyebrow: "Atlas · Whole-man intelligence",
+    title: "The intelligence behind the whole man.",
     narration:
-      "Atlas connects the signals. A shorter night, a demanding schedule, planned training, and reduced recovery margin become one transparent decision chain. The goal remains the same. The response becomes more intelligent.",
-    silentDurationMs: 13_000,
-    disclosure: "Simulated scenario model",
+      "{firstName}, now meet Atlas. Atlas is the intelligence layer connecting every part of Legacy Sanctum. It tracks the signals you choose to bring into the system: vitality, hormones, bloodwork, protocols, training, mindset, relationships, schedule, vision, and legacy. It does not see isolated data. It understands how the parts affect the whole. Atlas observes what changed, connects the context, explains what matters, anticipates where friction may appear, and helps you decide what to do next. It never replaces your judgment or your physician. It gives you one transparent intelligence built around the life you are actually leading.",
+    silentDurationMs: 35_000,
+    disclosure: "Simulated intelligence · member-controlled context",
   },
   {
     id: "mindset",

@@ -16,6 +16,7 @@ import {
   AppDevicePrologue,
   type DeviceProloguePhase,
 } from "./AppDevicePrologue";
+import { AtlasWholeManIntelligence } from "./AtlasWholeManIntelligence";
 import { TourVisual } from "./TourVisuals";
 import styles from "./continuous-atlas-tour.module.css";
 
@@ -395,11 +396,20 @@ export function ContinuousAtlasTour({
                     <span>/ {String(platformTourChapters.length).padStart(2, "0")}</span>
                   </div>
                 </div>
-                <TourVisual
-                  chapterId={chapter.id}
-                  firstName={firstName}
-                  reducedMotion={reducedMotion}
-                />
+                {chapter.id === "atlas-intelligence" ? (
+                  <AtlasWholeManIntelligence
+                    active={!tourPaused}
+                    firstName={firstName}
+                    reducedMotion={reducedMotion}
+                    speaking={status === "loading" || status === "playing"}
+                  />
+                ) : (
+                  <TourVisual
+                    chapterId={chapter.id}
+                    firstName={firstName}
+                    reducedMotion={reducedMotion}
+                  />
+                )}
                 {chapter.disclosure ? (
                   <span className={styles.disclosure}>{chapter.disclosure}</span>
                 ) : null}
